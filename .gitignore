@@ -1,0 +1,14 @@
+# Coverage reports
+coverage
+
+# API keys and secrets
+.env
+
+# Ignore built ts files
+build/**/*
+
+# ignore yarn.lock
+yarn.lock
+
+# Dependency directory
+node_modules
