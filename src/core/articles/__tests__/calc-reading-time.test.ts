@@ -18,4 +18,13 @@ describe("calculate the reading time of an article", () => {
       "2 min read"
     );
   });
+
+  it("should handle an article with more than one element", () => {
+    const content = [
+      ...buildSimpleContent(buildPhrase(475)),
+      ...buildSimpleContent(buildPhrase(475)),
+    ];
+
+    expect(calcReadingTime(content)).toBe("4 min read");
+  });
 });

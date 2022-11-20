@@ -11,13 +11,23 @@ const calcRawReadingTime = (allWordsArr: string[]): number =>
 const insertReadingTimeInTemplate = (readingTime: number): string =>
   `${readingTime} min read`;
 
+const extractAllWordsFromContent = (content: any[]): string => {
+  let articlesText = "";
+
+  content.forEach((el) => {
+    articlesText += el.children[0].text;
+  });
+
+  return articlesText;
+};
+
 const calcReadingTimeOperations = pipe(
+  extractAllWordsFromContent,
   splitBySpace,
   calcRawReadingTime,
   Math.ceil,
   insertReadingTimeInTemplate
 );
 
-export const calcReadingTime = (content: any[]) => {
-  return calcReadingTimeOperations(content[0].children[0].text);
-};
+export const calcReadingTime = (content: any[]) =>
+  calcReadingTimeOperations(content);
