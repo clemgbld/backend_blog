@@ -11,15 +11,19 @@ const calcRawReadingTime = (allWordsArr: string[]): number =>
 const insertReadingTimeInTemplate = (readingTime: number): string =>
   `${readingTime} min read`;
 
-const extractAllWordsFromContent = (content: any[]): string => {
-  let articlesText = "";
+const extractAllWordsFromContent = (
+  content: any[],
+  articlesText = ""
+): string =>
+  content.reduce(
+    (acc: string, el) => acc + extractWordFromContent(el),
+    articlesText
+  );
 
-  content.forEach((el) => {
-    articlesText += el.children[0].text;
-  });
-
-  return articlesText;
-};
+function extractWordFromContent(content: any) {
+  if (!content.type) return content.text;
+  if (content.children) return extractAllWordsFromContent(content.children);
+}
 
 const calcReadingTimeOperations = pipe(
   extractAllWordsFromContent,

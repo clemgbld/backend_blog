@@ -27,4 +27,36 @@ describe("calculate the reading time of an article", () => {
 
     expect(calcReadingTime(content)).toBe("4 min read");
   });
+
+  it("should be able to handle article with complex data structure", () => {
+    const content = [
+      {
+        type: "ul",
+        children: [
+          { type: "li", children: [{ text: buildPhrase(237) }] },
+          { type: "li", children: [{ text: buildPhrase(237) }] },
+          { type: "li", children: [{ text: buildPhrase(237) }] },
+        ],
+      },
+    ];
+
+    expect(calcReadingTime(content)).toBe("3 min read");
+  });
+
+  it("should handle when there  is an element with a type but without children", () => {
+    const content = [
+      ...buildSimpleContent(buildPhrase(475)),
+
+      { type: "div", id: 1 },
+      {
+        type: "img",
+        id: 1,
+        caption: ["caption 1"],
+        url: "https://my-url",
+        children: [{ text: buildPhrase(475) }],
+      },
+    ];
+
+    expect(calcReadingTime(content)).toBe("4 min read");
+  });
 });
