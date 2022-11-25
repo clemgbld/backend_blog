@@ -12,7 +12,10 @@ const insertReadingTimeInTemplate = (readingTime: number): string =>
   `${readingTime} min read`;
 
 const extractAllWordsFromContent = (
-  content: any[],
+  content: Record<
+    string,
+    string | number | Record<string, string | number>[]
+  >[],
   articlesText = ""
 ): string =>
   content.reduce(
@@ -20,7 +23,7 @@ const extractAllWordsFromContent = (
     articlesText
   );
 
-function extractWordFromContent(content: any) {
+function extractWordFromContent(content: Record<string, any>) {
   if (!content.type) return content.text;
   if (content.children) return extractAllWordsFromContent(content.children);
 }
@@ -33,5 +36,35 @@ const calcReadingTimeOperations = pipe(
   insertReadingTimeInTemplate
 );
 
-export const calcReadingTime = (content: any[]) =>
-  calcReadingTimeOperations(content);
+export const calcReadingTime = (
+  content: Record<string, string | number | Record<string, string | number>[]>[]
+) => calcReadingTimeOperations(content);
+
+type ArticleProps = {
+  id: string;
+  title: string;
+  summary?: string;
+  date: number;
+  hide?: boolean;
+  content: Record<string, any>[];
+  lightMode?: boolean;
+};
+
+export const buildArticle = ({
+  id,
+  title,
+  summary = "",
+  date,
+  hide = false,
+  content,
+  lightMode = false,
+}: ArticleProps) => ({
+  id,
+  title,
+  summary,
+  date,
+  hide,
+  content,
+  lightMode,
+  timeToRead: calcReadingTime(content),
+});
