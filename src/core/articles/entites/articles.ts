@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { pipe } from "ramda";
 
 const WORD_READ_PER_MIN = 238;
@@ -19,7 +18,7 @@ const extractAllWordsFromContent = (
   articlesText = ""
 ): string =>
   content.reduce(
-    (acc: string, el) => acc + extractWordFromContent(el),
+    (acc: string, el) => `${acc} ${extractWordFromContent(el)}`,
     articlesText
   );
 
@@ -36,17 +35,41 @@ const calcReadingTimeOperations = pipe(
   insertReadingTimeInTemplate
 );
 
+const throwArticleError = (params: string) => {
+  throw new Error(`An article must have ${params}`);
+};
+
+const articleValidation = ({
+  id,
+  title,
+  content,
+  date,
+}: {
+  id?: string;
+  title?: string;
+  content: Record<string, any>[];
+  date?: number;
+}) => {
+  if (!id) throwArticleError("an id");
+
+  if (content.length === 0) throwArticleError("a content");
+
+  if (!title) throwArticleError("a title");
+
+  if (!date) throwArticleError("a date");
+};
+
 export const calcReadingTime = (
   content: Record<string, string | number | Record<string, string | number>[]>[]
 ) => calcReadingTimeOperations(content);
 
 type ArticleProps = {
-  id: string;
-  title: string;
+  id?: string;
+  title?: string;
   summary?: string;
-  date: number;
+  date?: number;
   hide?: boolean;
-  content: Record<string, any>[];
+  content?: Record<string, any>[];
   lightMode?: boolean;
 };
 
@@ -56,15 +79,19 @@ export const buildArticle = ({
   summary = "",
   date,
   hide = false,
-  content,
+  content = [],
   lightMode = false,
-}: ArticleProps) => ({
-  id,
-  title,
-  summary,
-  date,
-  hide,
-  content,
-  lightMode,
-  timeToRead: calcReadingTime(content),
-});
+}: ArticleProps) => {
+  articleValidation({ id, title, content, date });
+
+  return {
+    id,
+    title,
+    summary,
+    date,
+    hide,
+    content,
+    lightMode,
+    timeToRead: calcReadingTime(content),
+  };
+};

@@ -57,7 +57,7 @@ describe("articles", () => {
         summary: "",
         date: 134435,
         content,
-        timeToRead: "3 min read",
+        timeToRead: "4 min read",
         lightMode: false,
         hide: false,
       });
@@ -90,10 +90,61 @@ describe("articles", () => {
         summary: "",
         date: 134435,
         content,
-        timeToRead: "4 min read",
+        timeToRead: "5 min read",
         lightMode: false,
         hide: false,
       });
+    });
+  });
+
+  describe("validation", () => {
+    it("should fails fast when the article does not have any content", () => {
+      expect(() =>
+        buildArticle({
+          id: "abc",
+          title: "title 1",
+          date: 134435,
+          content: [],
+        })
+      ).toThrow("An article must have a content");
+
+      expect(() =>
+        buildArticle({
+          id: "abc",
+          title: "title 1",
+          date: 134435,
+        })
+      ).toThrow("An article must have a content");
+    });
+
+    it("should fail fast when an article does not have a title", () => {
+      expect(() =>
+        buildArticle({
+          id: "abc",
+          date: 134435,
+          content: [buildSimpleContent("text")],
+        })
+      ).toThrow("An article must have a title");
+    });
+
+    it("should fail fast when an article does not have a date", () => {
+      expect(() =>
+        buildArticle({
+          id: "abc",
+          title: "title",
+          content: [buildSimpleContent("text")],
+        })
+      ).toThrow("An article must have a date");
+    });
+
+    it("should  fail fast when an article does not have an id", () => {
+      expect(() =>
+        buildArticle({
+          title: "title",
+          date: 123423543,
+          content: [buildSimpleContent("text")],
+        })
+      ).toThrow("An article must have an id");
     });
   });
 });
