@@ -12,10 +12,10 @@ type ArticleProps = {
 };
 
 export const buildArticle = ({
-  id,
-  title,
+  id = "",
+  title = "",
   summary = "",
-  date,
+  date = 0,
   hide = false,
   content = [],
   lightMode = false,
@@ -33,3 +33,5 @@ export const buildArticle = ({
     timeToRead: calcReadingTime(content),
   };
 };
+
+export type Article = ReturnType<typeof buildArticle>;
