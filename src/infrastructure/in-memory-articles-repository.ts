@@ -21,6 +21,7 @@ export const buildInMemoryArticlesRepository = () => {
       await deleteArticle(article.id);
       await add(article);
     },
+    one: async (id: string) => [...db].find(({ key }) => key === id)?.value,
   };
 };
 
