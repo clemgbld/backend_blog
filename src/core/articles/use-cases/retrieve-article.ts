@@ -11,6 +11,6 @@ export const retrieveArticle = async ({
   articlesRepository,
 }: RetrieveArticle) => {
   const articleFromRepo = await articlesRepository.one(id);
-
+  if (!articleFromRepo) return null;
   return parseArticleContent(articleFromRepo);
 };
