@@ -10,5 +10,9 @@ export const postArticle = async ({
   article,
   articlesRepository,
 }: PostArticle) => {
+  await articlesRepository.add({
+    ...article,
+    content: JSON.stringify(article.content),
+  });
   return article;
 };

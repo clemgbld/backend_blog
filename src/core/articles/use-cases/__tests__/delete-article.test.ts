@@ -1,0 +1,42 @@
+import { buildArticle } from "../../entites/articles";
+import { buildInMemoryArticlesRepository } from "../../../../infrastructure/in-memory-articles-repository";
+import { deleteArticle } from "../delete-article";
+
+const addArticleToBlog = async (
+  article: ReturnType<typeof buildArticle>,
+  articlesRepository: ReturnType<typeof buildInMemoryArticlesRepository>
+) =>
+  articlesRepository.add({
+    ...article,
+    content: JSON.stringify(article.content),
+  });
+
+describe("delete article", () => {
+  it("should delete an article from the blog and it should stay one article in the blog", async () => {
+    const article1 = buildArticle({
+      id: "bcd",
+      title: "title 1",
+      date: 12345,
+      content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+    });
+
+    const article2 = buildArticle({
+      id: "abc",
+      title: "title 1",
+      date: 12345,
+      content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+    });
+
+    const articlesRepository = buildInMemoryArticlesRepository();
+
+    await addArticleToBlog(article1, articlesRepository);
+
+    await addArticleToBlog(article2, articlesRepository);
+
+    await deleteArticle({ id: "abc", articlesRepository });
+
+    expect(await articlesRepository.all()).toEqual([
+      { ...article1, content: JSON.stringify(article1.content) },
+    ]);
+  });
+});

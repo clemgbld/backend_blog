@@ -14,5 +14,8 @@ describe("post new article", () => {
     const articlesRepository = buildInMemoryArticlesRepository();
 
     expect(await postArticle({ article, articlesRepository })).toEqual(article);
+    expect(await articlesRepository.all()).toEqual([
+      { ...article, content: JSON.stringify(article.content) },
+    ]);
   });
 });
