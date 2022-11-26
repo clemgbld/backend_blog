@@ -13,9 +13,12 @@ export const buildInMemoryArticlesRepository = () => {
     db.delete(articleToDelete);
   };
 
+  const all = () => [...db].map((db) => db.value);
+
   return {
     add,
-    all: async () => [...db].map((db) => db.value),
+    all: async () => all(),
+    allPuplished: async () => all().filter(({ hide }) => !hide),
     delete: deleteArticle,
     update: async (article: ArticleWithStringifyContent) => {
       await deleteArticle(article.id);
