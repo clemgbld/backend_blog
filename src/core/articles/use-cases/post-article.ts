@@ -1,5 +1,6 @@
 import { Article } from "../entites/articles";
 import { ArticlesRepository } from "../../../infrastructure/in-memory-articles-repository";
+import { stringifyArticleContent } from "../utils/stringify-article-content";
 
 type PostArticle = {
   article: Article;
@@ -10,9 +11,6 @@ export const postArticle = async ({
   article,
   articlesRepository,
 }: PostArticle) => {
-  await articlesRepository.add({
-    ...article,
-    content: JSON.stringify(article.content),
-  });
+  await articlesRepository.add(stringifyArticleContent(article));
   return article;
 };
