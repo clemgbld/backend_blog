@@ -1,3 +1,5 @@
+import { addArticleToBlog } from "../core/articles/use-cases/test-helper/test-helper";
+
 type ArticleWithStringifyContent = {
   id: string;
   title: string;
@@ -12,13 +14,21 @@ export const buildInMemoryArticlesRepository = () => {
   const db: Set<{ key: string; value: ArticleWithStringifyContent }> =
     new Set();
 
+  const add = async (article: ArticleWithStringifyContent) =>
+    db.add({ key: article.id, value: article });
+
+  const deleteArticle = async (id: string) => {
+    const articleToDelete: any = [...db].find(({ key }) => key === id);
+    db.delete(articleToDelete);
+  };
+
   return {
-    add: async (article: ArticleWithStringifyContent) =>
-      db.add({ key: article.id, value: article }),
+    add,
     all: async () => [...db].map((db) => db.value),
-    delete: async (id: string) => {
-      const articleToDelete: any = [...db].find(({ key }) => key === id);
-      db.delete(articleToDelete);
+    delete: deleteArticle,
+    update: async (article: ArticleWithStringifyContent) => {
+      await deleteArticle(article.id);
+      await add(article);
     },
   };
 };

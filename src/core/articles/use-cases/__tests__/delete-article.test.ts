@@ -1,15 +1,7 @@
 import { buildArticle } from "../../entites/articles";
 import { buildInMemoryArticlesRepository } from "../../../../infrastructure/in-memory-articles-repository";
+import { addArticleToBlog } from "../test-helper/test-helper";
 import { deleteArticle } from "../delete-article";
-
-const addArticleToBlog = async (
-  article: ReturnType<typeof buildArticle>,
-  articlesRepository: ReturnType<typeof buildInMemoryArticlesRepository>
-) =>
-  articlesRepository.add({
-    ...article,
-    content: JSON.stringify(article.content),
-  });
 
 describe("delete article", () => {
   it("should delete an article from the blog and it should stay one article in the blog", async () => {
