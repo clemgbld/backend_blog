@@ -14,7 +14,7 @@ const shouldLogUser = async ({
 }: {
   user: User;
   password: string;
-}) => user && (await bcrypt.compare(password, user.password));
+}): Promise<boolean> => user && (await bcrypt.compare(password, user.password));
 
 export const login = async ({
   email,
@@ -23,7 +23,6 @@ export const login = async ({
   tokenGenerator,
 }: Login) => {
   const user = userRepository.one(email);
-
   return (await shouldLogUser({ user, password }))
     ? tokenGenerator.generate(user.id)
     : null;
