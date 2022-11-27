@@ -1,4 +1,4 @@
-import { buildInMemoryArticlesRepository } from "../../../../infrastructure/in-memory-articles-repository";
+import { buildInMemoryArticlesRepository } from "../../../../infrastructure/articles/in-memory-articles-repository";
 import { buildArticle } from "../../entites/articles";
 import { addArticleToBlog } from "../test-helper/test-helper";
 import { retrievePuplishedArticles } from "../retrieve-puplished-articles";

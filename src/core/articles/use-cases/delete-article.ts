@@ -1,4 +1,4 @@
-import { ArticlesRepository } from "../../../infrastructure/in-memory-articles-repository";
+import { ArticlesRepository } from "../../../infrastructure/articles/in-memory-articles-repository";
 
 type DeleteArticle = {
   id: string;

@@ -1,5 +1,5 @@
 import { buildArticle } from "../../entites/articles";
-import { buildInMemoryArticlesRepository } from "../../../../infrastructure/in-memory-articles-repository";
+import { buildInMemoryArticlesRepository } from "../../../../infrastructure/articles/in-memory-articles-repository";
 
 export const addArticleToBlog = async (
   article: ReturnType<typeof buildArticle>,

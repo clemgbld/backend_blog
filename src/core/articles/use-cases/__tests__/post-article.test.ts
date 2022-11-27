@@ -1,5 +1,5 @@
 import { buildArticle } from "../../entites/articles";
-import { buildInMemoryArticlesRepository } from "../../../../infrastructure/in-memory-articles-repository";
+import { buildInMemoryArticlesRepository } from "../../../../infrastructure/articles/in-memory-articles-repository";
 import { postArticle } from "../post-article";
 
 describe("post new article", () => {
