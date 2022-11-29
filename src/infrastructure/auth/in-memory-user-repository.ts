@@ -6,8 +6,6 @@ export const buildInMemoryUserRepository = () => {
     add: async (user: User) => {
       db.add(user);
     },
-    one: (email: string) => {
-      return [...db].find((user) => user.email === email);
-    },
+    one: async (email: string) => [...db].find((user) => user.email === email),
   };
 };
