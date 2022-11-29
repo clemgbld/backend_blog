@@ -28,7 +28,3 @@ export const buildInMemoryArticlesRepository = () => {
       [...db].find(({ key, value }) => key === id && !value.hide)?.value,
   };
 };
-
-export type ArticlesRepository = ReturnType<
-  typeof buildInMemoryArticlesRepository
->;

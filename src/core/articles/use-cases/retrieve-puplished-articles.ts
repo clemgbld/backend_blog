@@ -1,4 +1,4 @@
-import { ArticlesRepository } from "../../../infrastructure/articles/in-memory-articles-repository";
+import { ArticlesRepository } from "../repositories/articles-repository";
 import { parseArticleContent } from "../utils/parse-article-content";
 
 type RetrievePuplishedArticles = {
