@@ -4,7 +4,7 @@ import {
   TokenGenerator,
 } from "../../../core/auth/repositories/auth-repositories";
 
-export interface AuthRequest extends Request {
+interface AuthRequestMiddleware extends Request {
   service?: {
     userRepository: UserRepository;
     tokenGenerator: TokenGenerator;
@@ -16,7 +16,14 @@ export const buildAuthMiddlewareServices =
     userRepository: UserRepository;
     tokenGenerator: TokenGenerator;
   }) =>
-  (req: AuthRequest, res: Response, next: NextFunction) => {
+  (req: AuthRequestMiddleware, res: Response, next: NextFunction) => {
     req.service = Object.freeze(services);
     next();
   };
+
+export interface AuthRequest extends Request {
+  service: {
+    userRepository: UserRepository;
+    tokenGenerator: TokenGenerator;
+  };
+}
