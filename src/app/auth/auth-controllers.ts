@@ -1,15 +1,15 @@
-import express, { Response } from "express";
-import { AuthRequest } from "./middlewares/auth-middleware-services";
+import express, { Response, Request } from "express";
+
 import { login } from "../../core/auth/use-cases/login";
 
 export const authRouter = express.Router();
 
-const loginCtrl: any = async (req: AuthRequest, res: Response) => {
+const loginCtrl: any = async (req: Request, res: Response) => {
   const tokenObj = await login({
     email: req.body.email,
     password: req.body.password,
-    userRepository: req.service.userRepository,
-    tokenGenerator: req.service.tokenGenerator,
+    userRepository: req.authService.userRepository,
+    tokenGenerator: req.authService.tokenGenerator,
   });
 
   res.status(200).json({
