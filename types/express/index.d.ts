@@ -2,6 +2,7 @@ import {
   UserRepository,
   TokenGenerator,
 } from "../../src/core/auth/repositories/auth-repositories";
+import { ArticlesRepository } from "../../src/core/articles/repositories/articles-repository";
 
 declare global {
   declare namespace Express {
@@ -9,6 +10,9 @@ declare global {
       authService: {
         userRepository: UserRepository;
         tokenGenerator: TokenGenerator;
+      };
+      articlesService: {
+        articlesRepository: ArticlesRepository;
       };
     }
   }

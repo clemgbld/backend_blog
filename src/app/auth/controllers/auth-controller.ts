@@ -1,4 +1,4 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import { login } from "../../../core/auth/use-cases/login";
 import { catchAsync } from "../../error/catch-async";
 import { AppError } from "../../error/app-error";
@@ -27,3 +27,12 @@ export const loginHandler = catchAsync(async (req: Request, res: Response) => {
     data: tokenObj,
   });
 });
+
+export const protectHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.headers.authorization) {
+      throw new AppError("You are not logged in !", 401);
+    }
+    next();
+  }
+);
