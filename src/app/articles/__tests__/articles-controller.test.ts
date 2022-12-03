@@ -5,7 +5,6 @@ import { buildArticlesMiddleware } from "../middlewares/articles-middleware";
 import { buildInMemoryArticlesRepository } from "../../../infrastructure/articles/in-memory-articles-repository";
 import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-memory-user-repository";
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
-import { protectHandler } from "../../auth/controllers/auth-controller";
 import { articlesRouter } from "../routes/articles-router";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
 import { buildUser } from "../../../core/auth/entities/user";
@@ -34,7 +33,6 @@ describe("given that the user needs to be authenticated", () => {
       "/api/v1/articles",
       authMiddleware,
       articlesMiddleware,
-      protectHandler,
       articlesRouter
     );
   });
@@ -109,27 +107,34 @@ describe("given that the user needs to be authenticated", () => {
   });
 
   describe("given that the user is logged in", () => {
-    describe("delete", () => {
-      beforeEach(async () => {
-        const user = await buildUser({
-          id: "abc",
-          email: "exemple@gmail.com",
-          password: "password",
-        });
-        userRepository.add(user);
+    beforeEach(async () => {
+      const user = await buildUser({
+        id: "abc",
+        email: "exemple@gmail.com",
+        password: "password",
       });
-      it("should delete expected article", async () => {
-        const article = buildArticle({
-          id: "123",
-          title: "title 1",
-          date: 12345,
-          content: [{ tyqpe: "h1", id: "1", text: "hello" }],
-        });
+      userRepository.add(user);
+    });
 
-        await articlesRepository.add({
-          ...article,
-          content: JSON.stringify(article.content),
-        });
+    const genrateAndAddArticle = async () => {
+      const article = buildArticle({
+        id: "123",
+        title: "title 1",
+        date: 12345,
+        content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+      });
+
+      await articlesRepository.add({
+        ...article,
+        content: JSON.stringify(article.content),
+      });
+
+      return article;
+    };
+
+    describe("DELETE /articles/delete/:id", () => {
+      it("should delete expected article", async () => {
+        await genrateAndAddArticle();
 
         const response = await request(app)
           .delete("/api/v1/articles/delete/123")
@@ -155,6 +160,27 @@ describe("given that the user needs to be authenticated", () => {
           status: "fail",
           statusCode: 400,
           message: "123 id does not exist",
+        });
+      });
+    });
+
+    describe("GET /articles", () => {
+      it("should should retrieve all articles", async () => {
+        const article = await genrateAndAddArticle();
+
+        const response = await request(app)
+          .get("/api/v1/articles")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .type("json");
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toEqual(
+          expect.stringContaining("json")
+        );
+        expect(response.body).toEqual({
+          status: "success",
+          results: 1,
+          data: [article],
         });
       });
     });
