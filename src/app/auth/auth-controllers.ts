@@ -1,17 +1,13 @@
 import express, { Response, Request } from "express";
-
 import { login } from "../../core/auth/use-cases/login";
-import { globalErrorHandler } from "../error/error-controllers";
+import { catchAsync } from "../error/catch-async";
+import { AppError } from "../error/app-error";
 
 export const authRouter = express.Router();
 
-const loginHandler: any = async (req: Request, res: Response) => {
+const loginHandler = catchAsync(async (req: Request, res: Response) => {
   if (!req.body.email) {
-    return globalErrorHandler({
-      res,
-      statusCode: 400,
-      message: "Please provide an email address and a password.",
-    });
+    throw new AppError("Please provide an email address and a password.", 400);
   }
 
   const tokenObj = await login({
@@ -21,17 +17,17 @@ const loginHandler: any = async (req: Request, res: Response) => {
     tokenGenerator: req.authService.tokenGenerator,
   });
 
-  if (!tokenObj)
-    return globalErrorHandler({
-      res,
-      statusCode: 401,
-      message: "Please provide a valid email address and password.",
-    });
+  if (!tokenObj) {
+    throw new AppError(
+      "Please provide a valid email address and password.",
+      401
+    );
+  }
 
   res.status(200).json({
     status: "success",
     data: tokenObj,
   });
-};
+});
 
 authRouter.route("/login").post(loginHandler);

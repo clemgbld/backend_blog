@@ -1,5 +1,4 @@
 import express, { Express } from "express";
-
 import request from "supertest";
 import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-memory-user-repository";
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
@@ -7,7 +6,6 @@ import { buildUser } from "../../../core/auth/entities/user";
 import { authRouter } from "../auth-controllers";
 import { buildAuthMiddlewareServices } from "../middlewares/auth-middleware-services";
 import bodyParser from "body-parser";
-import { globalErrorHandler } from "../../error/error-controllers";
 
 let userRepository: ReturnType<typeof buildInMemoryUserRepository>;
 let tokenGenerator: ReturnType<typeof inMemoryTokenGenerator>;
@@ -20,6 +18,12 @@ beforeEach(() => {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  const authMiddlewareServices = buildAuthMiddlewareServices({
+    userRepository,
+    tokenGenerator,
+  });
+
+  app.use("/api/v1/users", authMiddlewareServices, authRouter);
 });
 
 const email = "exemple@gmail.com";
@@ -29,13 +33,6 @@ describe("POST /login", () => {
   it("should login the user", async () => {
     const user = await buildUser({ id: "abc", email, password });
     await userRepository.add(user);
-
-    const authMiddlewareServices = buildAuthMiddlewareServices({
-      userRepository,
-      tokenGenerator,
-    });
-
-    app.use("/api/v1/users", authMiddlewareServices, authRouter);
 
     const response = await request(app)
       .post("/api/v1/users/login")
@@ -61,14 +58,6 @@ describe("POST /login", () => {
 
   describe("error handling", () => {
     it("should not login the user when the email or the password is wrong and deliver a 401 error", async () => {
-      const authMiddlewareServices = buildAuthMiddlewareServices({
-        userRepository,
-        tokenGenerator,
-      });
-
-      app.use("/api/v1/users", authMiddlewareServices, authRouter);
-      app.use(globalErrorHandler);
-
       const response = await request(app)
         .post("/api/v1/users/login")
         .type("json")
@@ -89,13 +78,6 @@ describe("POST /login", () => {
     });
 
     it("should not login when the email is missing and deliver an 400 error", async () => {
-      const authMiddlewareServices = buildAuthMiddlewareServices({
-        userRepository,
-        tokenGenerator,
-      });
-
-      app.use("/api/v1/users", authMiddlewareServices, authRouter);
-
       const response = await request(app)
         .post("/api/v1/users/login")
         .type("json")
