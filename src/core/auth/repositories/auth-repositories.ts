@@ -7,9 +7,13 @@ type Token = {
 
 export type TokenGenerator = {
   generate: (id?: string) => Token;
+  decode: (token: string) => Promise<{
+    id: string;
+  }>;
 };
 
 export type UserRepository = {
   add: (user: User) => Promise<void>;
   one: (email: string) => Promise<User | undefined>;
+  findById: (id: string) => Promise<User | undefined>;
 };

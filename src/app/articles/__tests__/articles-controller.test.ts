@@ -36,8 +36,6 @@ beforeEach(() => {
   );
 });
 
-const id = "abc";
-
 describe("given that the user is not login", () => {
   it("should not let this operation there is no authorization field in the headers", async () => {
     const response = await request(app)
@@ -56,8 +54,6 @@ describe("given that the user is not login", () => {
   });
 
   it.skip("should not let this operation happen when the authorization headers does not start by 'Bearer' ", async () => {
-    const response = await request(app)
-      .delete("/api/v1/articles/delete")
-      .type("json");
+    await request(app).delete("/api/v1/articles/delete").type("json");
   });
 });
