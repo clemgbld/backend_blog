@@ -1,4 +1,5 @@
 import { ArticlesRepository } from "../repositories/articles-repository";
+import { parseArticleContent } from "../utils/parse-article-content";
 
 type DeleteArticle = {
   id: string;
@@ -9,5 +10,7 @@ export const deleteArticle = async ({
   id,
   articlesRepository,
 }: DeleteArticle) => {
-  return await articlesRepository.delete(id);
+  const deletedArticle = await articlesRepository.delete(id);
+
+  return deletedArticle ? parseArticleContent(deletedArticle) : null;
 };

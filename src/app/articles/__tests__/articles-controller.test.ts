@@ -106,7 +106,9 @@ describe("given that the user needs to be authenticated", () => {
     });
   });
 
-  // describe("given that the user is logged in", () => {
-  //   it("should delete ", async () => {});
-  // });
+  describe("given that the user is logged in", () => {
+    describe("delete", () => {
+      it("should delete expected article", async () => {});
+    });
+  });
 });

@@ -34,9 +34,16 @@ describe("delete article", () => {
       { ...article1, content: JSON.stringify(article1.content) },
     ]);
 
-    expect(deletedArticle).toEqual({
-      ...article2,
-      content: JSON.stringify(article2.content),
+    expect(deletedArticle).toEqual(article2);
+  });
+
+  it("should be null when no article has been deleted", async () => {
+    const articlesRepository = buildInMemoryArticlesRepository();
+    const deletedArticle = await deleteArticle({
+      id: "abc",
+      articlesRepository,
     });
+
+    expect(deletedArticle).toBe(null);
   });
 });
