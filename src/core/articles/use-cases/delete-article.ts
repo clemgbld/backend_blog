@@ -9,5 +9,5 @@ export const deleteArticle = async ({
   id,
   articlesRepository,
 }: DeleteArticle) => {
-  await articlesRepository.delete(id);
+  return await articlesRepository.delete(id);
 };

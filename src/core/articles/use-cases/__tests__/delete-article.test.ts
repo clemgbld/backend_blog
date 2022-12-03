@@ -25,10 +25,18 @@ describe("delete article", () => {
 
     await addArticleToBlog(article2, articlesRepository);
 
-    await deleteArticle({ id: "abc", articlesRepository });
+    const deletedArticle = await deleteArticle({
+      id: "abc",
+      articlesRepository,
+    });
 
     expect(await articlesRepository.all()).toEqual([
       { ...article1, content: JSON.stringify(article1.content) },
     ]);
+
+    expect(deletedArticle).toEqual({
+      ...article2,
+      content: JSON.stringify(article2.content),
+    });
   });
 });

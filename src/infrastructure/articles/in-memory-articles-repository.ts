@@ -8,9 +8,14 @@ export const buildInMemoryArticlesRepository = () => {
     db.add({ key: article.id, value: article });
   };
 
+  const one = async (id: string) =>
+    [...db].find(({ key, value }) => key === id && !value.hide)?.value;
+
   const deleteArticle = async (id: string) => {
+    const deletedArticle = await one(id);
     const articleToDelete: any = [...db].find(({ key }) => key === id);
     db.delete(articleToDelete);
+    return deletedArticle;
   };
 
   const all = () => [...db].map((db) => db.value);
@@ -24,7 +29,6 @@ export const buildInMemoryArticlesRepository = () => {
       await deleteArticle(article.id);
       await add(article);
     },
-    one: async (id: string) =>
-      [...db].find(({ key, value }) => key === id && !value.hide)?.value,
+    one,
   };
 };

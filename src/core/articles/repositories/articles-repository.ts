@@ -10,7 +10,7 @@ export type ArticleWithStringifyContent = {
 
 export type ArticlesRepository = {
   add: (article: ArticleWithStringifyContent) => Promise<void>;
-  delete: (id: string) => Promise<void>;
+  delete: (id: string) => Promise<ArticleWithStringifyContent | undefined>;
   all: () => Promise<ArticleWithStringifyContent[]>;
   update: (article: ArticleWithStringifyContent) => Promise<void>;
   one: (id: string) => Promise<ArticleWithStringifyContent | undefined>;
