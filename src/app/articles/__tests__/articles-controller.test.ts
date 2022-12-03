@@ -8,6 +8,8 @@ import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-t
 import { protectHandler } from "../../auth/controllers/auth-controller";
 import { articlesRouter } from "../routes/articles-router";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
+import { buildUser } from "../../../core/auth/entities/user";
+import { buildArticle } from "../../../core/articles/entites/articles";
 
 describe("given that the user needs to be authenticated", () => {
   let app: Express;
@@ -108,7 +110,53 @@ describe("given that the user needs to be authenticated", () => {
 
   describe("given that the user is logged in", () => {
     describe("delete", () => {
-      it("should delete expected article", async () => {});
+      beforeEach(async () => {
+        const user = await buildUser({
+          id: "abc",
+          email: "exemple@gmail.com",
+          password: "password",
+        });
+        userRepository.add(user);
+      });
+      it("should delete expected article", async () => {
+        const article = buildArticle({
+          id: "123",
+          title: "title 1",
+          date: 12345,
+          content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+        });
+
+        await articlesRepository.add({
+          ...article,
+          content: JSON.stringify(article.content),
+        });
+
+        const response = await request(app)
+          .delete("/api/v1/articles/delete/123")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .type("json");
+
+        expect(response.statusCode).toBe(204);
+
+        expect(await articlesRepository.all()).toEqual([]);
+      });
+
+      it("should give a 400 error when there is no article to delete", async () => {
+        const response = await request(app)
+          .delete("/api/v1/articles/delete/123")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .type("json");
+
+        expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toEqual(
+          expect.stringContaining("json")
+        );
+        expect(response.body).toEqual({
+          status: "fail",
+          statusCode: 400,
+          message: "123 id does not exist",
+        });
+      });
     });
   });
 });
