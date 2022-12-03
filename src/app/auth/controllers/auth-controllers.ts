@@ -1,12 +1,10 @@
-import express, { Response, Request } from "express";
-import { login } from "../../core/auth/use-cases/login";
-import { catchAsync } from "../error/catch-async";
-import { AppError } from "../error/app-error";
+import { Response, Request } from "express";
+import { login } from "../../../core/auth/use-cases/login";
+import { catchAsync } from "../../error/catch-async";
+import { AppError } from "../../error/app-error";
 
-export const authRouter = express.Router();
-
-const loginHandler = catchAsync(async (req: Request, res: Response) => {
-  if (!req.body.email) {
+export const loginHandler = catchAsync(async (req: Request, res: Response) => {
+  if (!req.body.email || !req.body.password) {
     throw new AppError("Please provide an email address and a password.", 400);
   }
 
@@ -29,5 +27,3 @@ const loginHandler = catchAsync(async (req: Request, res: Response) => {
     data: tokenObj,
   });
 });
-
-authRouter.route("/login").post(loginHandler);

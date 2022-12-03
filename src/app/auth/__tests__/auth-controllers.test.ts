@@ -3,7 +3,7 @@ import request from "supertest";
 import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-memory-user-repository";
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
 import { buildUser } from "../../../core/auth/entities/user";
-import { authRouter } from "../auth-controllers";
+import { authRouter } from "../routes/auth-router";
 import { buildAuthMiddlewareServices } from "../middlewares/auth-middleware-services";
 import bodyParser from "body-parser";
 
@@ -77,12 +77,31 @@ describe("POST /login", () => {
       });
     });
 
-    it("should not login when the email is missing and deliver an 400 error", async () => {
+    it("should not login the user when the email is missing and deliver an 400 error", async () => {
       const response = await request(app)
         .post("/api/v1/users/login")
         .type("json")
         .send({
           password,
+        });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+      expect(response.body).toEqual({
+        status: "fail",
+        statusCode: 400,
+        message: "Please provide an email address and a password.",
+      });
+    });
+
+    it("should not login the user when the password is missing and deliver a 400 error", async () => {
+      const response = await request(app)
+        .post("/api/v1/users/login")
+        .type("json")
+        .send({
+          email,
         });
 
       expect(response.statusCode).toBe(400);

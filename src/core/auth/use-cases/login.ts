@@ -28,6 +28,7 @@ export const login = async ({
   tokenGenerator,
 }: Login) => {
   const user = await userRepository.one(email);
+
   return (await shouldLogUser({ user, password }))
     ? tokenGenerator.generate(user?.id)
     : null;
