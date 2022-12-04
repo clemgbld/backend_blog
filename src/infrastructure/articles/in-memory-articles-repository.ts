@@ -26,8 +26,11 @@ export const buildInMemoryArticlesRepository = () => {
     allPuplished: async () => all().filter(({ hide }) => !hide),
     delete: deleteArticle,
     update: async (article: ArticleWithStringifyContent) => {
+      const articleToUpdate = await one(article.id);
+      if (!articleToUpdate) return undefined;
       await deleteArticle(article.id);
       await add(article);
+      return article;
     },
     one,
   };

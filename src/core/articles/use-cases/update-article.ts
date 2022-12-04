@@ -1,6 +1,7 @@
 import { Article } from "../entites/articles";
 import { ArticlesRepository } from "../repositories/articles-repository";
 import { stringifyArticleContent } from "../utils/stringify-article-content";
+import { parseArticleContent } from "../utils/parse-article-content";
 
 type UpdateArticle = {
   article: Article;
@@ -11,6 +12,8 @@ export const updateArticle = async ({
   article,
   articlesRepository,
 }: UpdateArticle) => {
-  await articlesRepository.update(stringifyArticleContent(article));
-  return article;
+  const modifiedArticle = await articlesRepository.update(
+    stringifyArticleContent(article)
+  );
+  return modifiedArticle ? parseArticleContent(modifiedArticle) : null;
 };

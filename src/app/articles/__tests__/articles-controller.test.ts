@@ -121,7 +121,7 @@ describe("given that the user needs to be authenticated", () => {
         id: "123",
         title: "title 1",
         date: 12345,
-        content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+        content: [{ type: "h1", id: "1", text: "hello" }],
       });
 
       await articlesRepository.add({
@@ -181,6 +181,65 @@ describe("given that the user needs to be authenticated", () => {
           status: "success",
           results: 1,
           data: [article],
+        });
+      });
+    });
+
+    describe("PATCH /articles", () => {
+      it("should correctly update the expected article", async () => {
+        await genrateAndAddArticle();
+        const article = buildArticle({
+          id: "123",
+          title: "title 1",
+          summary: "summary 1",
+          date: 12345,
+          content: [{ type: "h1", id: "1", text: "hello" }],
+          hide: true,
+          lightMode: true,
+        });
+
+        const response = await request(app)
+          .patch("/api/v1/articles")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .send(article)
+          .type("json");
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toEqual(
+          expect.stringContaining("json")
+        );
+        expect(response.body).toEqual({
+          status: "success",
+
+          data: article,
+        });
+      });
+
+      it.skip("should fails fast when the expected article to update is not found with a 400 error", async () => {
+        const article = buildArticle({
+          id: "123",
+          title: "title 1",
+          summary: "summary 1",
+          date: 12345,
+          content: [{ type: "h1", id: "1", text: "hello" }],
+          hide: true,
+          lightMode: true,
+        });
+
+        const response = await request(app)
+          .patch("/api/v1/articles")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .send(article)
+          .type("json");
+
+        expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toEqual(
+          expect.stringContaining("json")
+        );
+        expect(response.body).toEqual({
+          status: "fail",
+          statusCode: 400,
+          message: "123 id does not exist",
         });
       });
     });

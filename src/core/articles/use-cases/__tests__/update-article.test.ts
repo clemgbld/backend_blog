@@ -27,4 +27,21 @@ describe("update article", () => {
 
     expect(articleUpdated).toEqual(modifiedArticle);
   });
+
+  it("should be null when it did not find the article to update", async () => {
+    const article = buildArticle({
+      id: "abc",
+      title: "title 1",
+      date: 12345,
+      content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+    });
+    const articlesRepository = buildInMemoryArticlesRepository();
+
+    const articleUpdated = await updateArticle({
+      article,
+      articlesRepository,
+    });
+
+    expect(articleUpdated).toBe(null);
+  });
 });
