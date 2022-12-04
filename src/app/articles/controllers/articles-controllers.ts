@@ -3,8 +3,8 @@ import { deleteArticle } from "../../../core/articles/use-cases/delete-article";
 import { retrieveArticles } from "../../../core/articles/use-cases/retrieve-articles";
 import { updateArticle } from "../../../core/articles/use-cases/update-article";
 import { catchAsync } from "../../error/catch-async";
-import { AppError } from "../../error/app-error";
 import { buildArticle } from "../../../core/articles/entites/articles";
+import { throw400ErrorWhenIdDoesNotExist } from "../../error/throw-error";
 
 export const updateHandler = catchAsync(async (req: Request, res: Response) => {
   const article = buildArticle({
@@ -22,9 +22,7 @@ export const updateHandler = catchAsync(async (req: Request, res: Response) => {
     articlesRepository: req.articlesService.articlesRepository,
   });
 
-  if (!updtatedArticle) {
-    throw new AppError(`${req.params.id} id does not exist`, 400);
-  }
+  if (!updtatedArticle) return throw400ErrorWhenIdDoesNotExist(article.id);
 
   res.status(200).json({
     status: "success",
@@ -38,9 +36,7 @@ export const deleteHandler = catchAsync(async (req: Request, res: Response) => {
     articlesRepository: req.articlesService.articlesRepository,
   });
 
-  if (!deletedArticle) {
-    throw new AppError(`${req.params.id} id does not exist`, 400);
-  }
+  if (!deletedArticle) return throw400ErrorWhenIdDoesNotExist(req.params.id);
 
   res.status(204).json({
     status: "success",

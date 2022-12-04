@@ -215,7 +215,7 @@ describe("given that the user needs to be authenticated", () => {
         });
       });
 
-      it.skip("should fails fast when the expected article to update is not found with a 400 error", async () => {
+      it("should fails fast when the expected article to update is not found with a 400 error", async () => {
         const article = buildArticle({
           id: "123",
           title: "title 1",
