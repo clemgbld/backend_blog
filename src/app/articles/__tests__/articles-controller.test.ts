@@ -9,6 +9,9 @@ import { articlesRouter } from "../routes/articles-router";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
 import { buildUser } from "../../../core/auth/entities/user";
 import { buildArticle } from "../../../core/articles/entites/articles";
+import { buildInMemoryTime } from "../../../infrastructure/time/in-memory-time";
+import { buildInMemoryIdGenerator } from "../../../infrastructure/id/in-memory-id-generator";
+import { buildTimeMiddleware } from "../../time/middlewares/time-middleware";
 
 describe("given that the user needs to be authenticated", () => {
   let app: Express;
@@ -22,6 +25,9 @@ describe("given that the user needs to be authenticated", () => {
     articlesRepository = buildInMemoryArticlesRepository();
     userRepository = buildInMemoryUserRepository();
     const tokenGenerator = inMemoryTokenGenerator();
+    const time = buildInMemoryTime();
+    const idGenerator = buildInMemoryIdGenerator();
+
     const articlesMiddleware = buildArticlesMiddleware({
       articlesRepository,
     });
@@ -29,10 +35,13 @@ describe("given that the user needs to be authenticated", () => {
       userRepository,
       tokenGenerator,
     });
+
+    const timeMiddleware = buildTimeMiddleware({ time });
     app.use(
       "/api/v1/articles",
       authMiddleware,
       articlesMiddleware,
+      timeMiddleware,
       articlesRouter
     );
   });
@@ -241,6 +250,24 @@ describe("given that the user needs to be authenticated", () => {
           statusCode: 400,
           message: "123 id does not exist",
         });
+      });
+    });
+
+    describe("POST /articles", () => {
+      it.skip("should should successfully post a new article in the blog", async () => {
+        const article = buildArticle({
+          id: "123",
+          title: "title 1",
+          summary: "summary 1",
+          date: 12345,
+          content: [{ type: "h1", id: "1", text: "hello" }],
+        });
+
+        const response = await request(app)
+          .post("/api/v1/articles")
+          .set("Authorization", "Bearer FAKE_TOKEN")
+          .send(article)
+          .type("json");
       });
     });
   });
