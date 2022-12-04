@@ -12,6 +12,7 @@ import { buildArticle } from "../../../core/articles/entites/articles";
 import { buildInMemoryTime } from "../../../infrastructure/time/in-memory-time";
 import { buildInMemoryIdGenerator } from "../../../infrastructure/id/in-memory-id-generator";
 import { buildTimeMiddleware } from "../../time/middlewares/time-middleware";
+import { buildIdMiddleware } from "../../id/middlewares/id-middleware";
 
 describe("given that the user needs to be authenticated", () => {
   let app: Express;
@@ -37,11 +38,15 @@ describe("given that the user needs to be authenticated", () => {
     });
 
     const timeMiddleware = buildTimeMiddleware({ time });
+
+    const idMiddleware = buildIdMiddleware({ idGenerator });
+
     app.use(
       "/api/v1/articles",
       authMiddleware,
       articlesMiddleware,
       timeMiddleware,
+      idMiddleware,
       articlesRouter
     );
   });
