@@ -4,6 +4,7 @@ import {
   updateHandler,
   retrieveArticlesHandler,
   retrievePublishedArticlesHandler,
+  retrievePublishedArticleHandler,
   postHandler,
 } from "../controllers/articles-controllers";
 import { protectHandler } from "../../auth/controllers/auth-controller";
@@ -11,8 +12,11 @@ import { protectHandler } from "../../auth/controllers/auth-controller";
 export const articlesRouter = express.Router();
 
 articlesRouter.get("/published", retrievePublishedArticlesHandler);
+articlesRouter.get("/published/:id", retrievePublishedArticleHandler);
 
-articlesRouter.delete("/delete/:id", protectHandler, deleteHandler);
-articlesRouter.get("/", protectHandler, retrieveArticlesHandler);
-articlesRouter.patch("/", protectHandler, updateHandler);
-articlesRouter.post("/", protectHandler, postHandler);
+articlesRouter.use(protectHandler);
+
+articlesRouter.delete("/delete/:id", deleteHandler);
+articlesRouter.get("/", retrieveArticlesHandler);
+articlesRouter.patch("/", updateHandler);
+articlesRouter.post("/", postHandler);

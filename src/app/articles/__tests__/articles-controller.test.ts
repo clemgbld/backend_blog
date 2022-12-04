@@ -311,5 +311,37 @@ describe("articles controllers", () => {
         data: [article],
       });
     });
+
+    it("GET /articles/published/:id", async () => {
+      const article = await genrateAndAddArticle();
+      const response = await request(app)
+        .get("/api/v1/articles/published/123")
+        .type("json");
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+      expect(response.body).toEqual({
+        status: "success",
+        data: article,
+      });
+    });
+
+    it("GET /articles/published/:id should fails fast when the expected article is not found", async () => {
+      const response = await request(app)
+        .get("/api/v1/articles/published/123")
+        .type("json");
+
+      expect(response.statusCode).toBe(400);
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+      expect(response.body).toEqual({
+        status: "fail",
+        statusCode: 400,
+        message: "123 id does not exist",
+      });
+    });
   });
 });

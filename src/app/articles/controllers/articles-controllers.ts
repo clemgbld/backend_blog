@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { deleteArticle } from "../../../core/articles/use-cases/delete-article";
 import { retrieveArticles } from "../../../core/articles/use-cases/retrieve-articles";
 import { retrievePuplishedArticles } from "../../../core/articles/use-cases/retrieve-puplished-articles";
+import { retrieveArticle } from "../../../core/articles/use-cases/retrieve-article";
 import { updateArticle } from "../../../core/articles/use-cases/update-article";
 import { postArticle } from "../../../core/articles/use-cases/post-article";
 import { catchAsync } from "../../error/catch-async";
@@ -89,6 +90,22 @@ export const retrievePublishedArticlesHandler = catchAsync(
       status: "success",
       results: articles.length,
       data: articles,
+    });
+  }
+);
+
+export const retrievePublishedArticleHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const article = await retrieveArticle({
+      id: req.params.id,
+      articlesRepository: req.articlesService.articlesRepository,
+    });
+
+    if (!article) return throw400ErrorWhenIdDoesNotExist(req.params.id);
+
+    res.status(200).json({
+      status: "success",
+      data: article,
     });
   }
 );
