@@ -51,7 +51,7 @@ describe("given that the user needs to be authenticated", () => {
     );
   });
 
-  describe("given that the user is not login", () => {
+  describe("given that the user needs to be authenticated and is not login", () => {
     it("should not let this operation there is no authorization field in the headers", async () => {
       const response = await request(app)
         .delete("/api/v1/articles/delete/123")
@@ -120,7 +120,7 @@ describe("given that the user needs to be authenticated", () => {
     });
   });
 
-  describe("given that the user is logged in", () => {
+  describe("given that the user needs to be authenticated and is logged in", () => {
     beforeEach(async () => {
       const user = await buildUser({
         id: "abc",
