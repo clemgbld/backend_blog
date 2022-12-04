@@ -14,7 +14,23 @@ import { buildInMemoryIdGenerator } from "../../../infrastructure/id/in-memory-i
 import { buildTimeMiddleware } from "../../time/middlewares/time-middleware";
 import { buildIdMiddleware } from "../../id/middlewares/id-middleware";
 
-describe("given that the user needs to be authenticated", () => {
+describe("articles controllers", () => {
+  const genrateAndAddArticle = async () => {
+    const article = buildArticle({
+      id: "123",
+      title: "title 1",
+      date: 12345,
+      content: [{ type: "h1", id: "1", text: "hello" }],
+    });
+
+    await articlesRepository.add({
+      ...article,
+      content: JSON.stringify(article.content),
+    });
+
+    return article;
+  };
+
   let app: Express;
   let articlesRepository: ReturnType<typeof buildInMemoryArticlesRepository>;
   let userRepository: ReturnType<typeof buildInMemoryUserRepository>;
@@ -129,22 +145,6 @@ describe("given that the user needs to be authenticated", () => {
       });
       userRepository.add(user);
     });
-
-    const genrateAndAddArticle = async () => {
-      const article = buildArticle({
-        id: "123",
-        title: "title 1",
-        date: 12345,
-        content: [{ type: "h1", id: "1", text: "hello" }],
-      });
-
-      await articlesRepository.add({
-        ...article,
-        content: JSON.stringify(article.content),
-      });
-
-      return article;
-    };
 
     describe("DELETE /articles/delete/:id", () => {
       it("should delete expected article", async () => {
@@ -279,7 +279,7 @@ describe("given that the user needs to be authenticated", () => {
           expect.stringContaining("json")
         );
         expect(response.body).toEqual({
-          statut: "success",
+          status: "success",
           data: article,
         });
 
@@ -289,6 +289,26 @@ describe("given that the user needs to be authenticated", () => {
           ...article,
           content: JSON.stringify(article.content),
         });
+      });
+    });
+  });
+
+  describe("given that the user does not need to be authenticated", () => {
+    it("GET /articles/published", async () => {
+      const article = await genrateAndAddArticle();
+      const response = await request(app)
+        .get("/api/v1/articles/published")
+        .send(article)
+        .type("json");
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+      expect(response.body).toEqual({
+        status: "success",
+        results: 1,
+        data: [article],
       });
     });
   });

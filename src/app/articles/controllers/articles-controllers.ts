@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { deleteArticle } from "../../../core/articles/use-cases/delete-article";
 import { retrieveArticles } from "../../../core/articles/use-cases/retrieve-articles";
+import { retrievePuplishedArticles } from "../../../core/articles/use-cases/retrieve-puplished-articles";
 import { updateArticle } from "../../../core/articles/use-cases/update-article";
 import { postArticle } from "../../../core/articles/use-cases/post-article";
 import { catchAsync } from "../../error/catch-async";
@@ -46,7 +47,7 @@ export const postHandler = catchAsync(async (req: Request, res: Response) => {
   });
 
   res.status(201).json({
-    statut: "success",
+    status: "success",
     data: article,
   });
 });
@@ -70,6 +71,20 @@ export const retrieveArticlesHandler = catchAsync(
     const articles = await retrieveArticles({
       articlesRepository: req.articlesService.articlesRepository,
     });
+    res.status(200).json({
+      status: "success",
+      results: articles.length,
+      data: articles,
+    });
+  }
+);
+
+export const retrievePublishedArticlesHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const articles = await retrievePuplishedArticles({
+      articlesRepository: req.articlesService.articlesRepository,
+    });
+
     res.status(200).json({
       status: "success",
       results: articles.length,
