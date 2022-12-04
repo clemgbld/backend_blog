@@ -259,12 +259,12 @@ describe("given that the user needs to be authenticated", () => {
     });
 
     describe("POST /articles", () => {
-      it.skip("should should successfully post a new article in the blog", async () => {
+      it("should should successfully post a new article in the blog", async () => {
         const article = buildArticle({
-          id: "123",
+          id: "FAKE_ID",
           title: "title 1",
           summary: "summary 1",
-          date: 12345,
+          date: 123456,
           content: [{ type: "h1", id: "1", text: "hello" }],
         });
 
@@ -273,6 +273,22 @@ describe("given that the user needs to be authenticated", () => {
           .set("Authorization", "Bearer FAKE_TOKEN")
           .send(article)
           .type("json");
+
+        expect(response.statusCode).toBe(201);
+        expect(response.headers["content-type"]).toEqual(
+          expect.stringContaining("json")
+        );
+        expect(response.body).toEqual({
+          statut: "success",
+          data: article,
+        });
+
+        const articleAdded = await articlesRepository.one("FAKE_ID");
+
+        expect(articleAdded).toEqual({
+          ...article,
+          content: JSON.stringify(article.content),
+        });
       });
     });
   });
