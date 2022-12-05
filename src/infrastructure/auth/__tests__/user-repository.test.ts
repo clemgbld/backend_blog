@@ -8,6 +8,7 @@ import { buildIdGenerator } from "../../id/id-generator";
 let db: Db;
 let connection: MongoClient;
 let mongoServer: MongoMemoryServer;
+let userRepository: ReturnType<typeof buildUserRepository>;
 
 describe("user repositories", () => {
   const email = "exemple@gmail.com";
@@ -20,6 +21,14 @@ describe("user repositories", () => {
     mongoServer = dbData.mongoServer;
   });
 
+  beforeEach(() => {
+    userRepository = buildUserRepository(db);
+  });
+
+  afterEach(async () => {
+    await db.collection("users").deleteMany({});
+  });
+
   afterAll(async () => {
     jest.setTimeout(20000);
     await mongoServer.stop();
@@ -28,7 +37,7 @@ describe("user repositories", () => {
 
   it("should find a user by email", async () => {
     const idGenerator = buildIdGenerator();
-    const userRepository = buildUserRepository(db);
+
     const user = await buildUser({
       id: idGenerator.makeId(),
       email,
@@ -38,7 +47,10 @@ describe("user repositories", () => {
     const expectedUser = await userRepository.one(email);
 
     expect(expectedUser).toEqual(user);
+  });
 
-    await db.collection("users").deleteOne({ email });
+  it("should be undefined when trying to find an user that does not exist", async () => {
+    const expectedUser = await userRepository.one(email);
+    expect(expectedUser).toBe(undefined);
   });
 });

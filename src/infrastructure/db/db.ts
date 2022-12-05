@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
 
-export const initDB = async (inMemory = true) => {
+export const initDB = async () => {
   const mongoServer = await MongoMemoryServer.create();
 
   const connection = await MongoClient.connect(mongoServer.getUri(), {});
