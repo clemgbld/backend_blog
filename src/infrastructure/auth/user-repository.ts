@@ -12,5 +12,7 @@ export const buildUserRepository = (db: Db) => {
       const userFromDb = await collection.findOne({ email });
       return adaptDataForApp(userFromDb);
     },
+    findById: async (id: string): Promise<User | undefined> =>
+      adaptDataForApp(await collection.findOne({ _id: id })),
   };
 };

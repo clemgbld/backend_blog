@@ -53,4 +53,17 @@ describe("user repositories", () => {
     const expectedUser = await userRepository.one(email);
     expect(expectedUser).toBe(undefined);
   });
+
+  it("should be able to retrieve the user by id", async () => {
+    const idGenerator = buildIdGenerator();
+    const id = idGenerator.makeId();
+    const user = await buildUser({
+      id,
+      email,
+      password,
+    });
+    await userRepository.add(user);
+    const expectedUser = await userRepository.findById(id);
+    expect(expectedUser).toEqual(user);
+  });
 });
