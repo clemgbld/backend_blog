@@ -57,4 +57,10 @@ describe("articles repository", () => {
     const expectedArticle = await articlesRepository.one(id);
     expect(expectedArticle).toEqual(article);
   });
+
+  it("should be able to delete the expected article", async () => {
+    const { article, id } = generateArticle();
+    await articlesRepository.add(article);
+    const deletedArticle = await articlesRepository.delete(id);
+  });
 });
