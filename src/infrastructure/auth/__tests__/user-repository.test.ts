@@ -1,15 +1,9 @@
-import { MongoClient, Db, ObjectId } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { initDB } from "../../db/db";
 import { buildUserRepository } from "../user-repository";
 import { buildUser } from "../../../core/auth/entities/user";
-
-const idGenerator = {
-  makeId: () => {
-    const id = new ObjectId();
-    return id.toString();
-  },
-};
+import { buildIdGenerator } from "../../id/id-generator";
 
 let db: Db;
 let connection: MongoClient;
@@ -28,12 +22,12 @@ describe("user repositories", () => {
 
   afterAll(async () => {
     jest.setTimeout(20000);
-
     await mongoServer.stop();
     await connection.close();
   });
 
   it("should find a user by email", async () => {
+    const idGenerator = buildIdGenerator();
     const userRepository = buildUserRepository(db);
     const user = await buildUser({
       id: idGenerator.makeId(),
