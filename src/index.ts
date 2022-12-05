@@ -1,1 +1,5 @@
-console.log("hello from the server");
+import dotenv from "dotenv";
+
+dotenv.config({ path: "./.env" });
+
+console.log(process.env.PORT);
