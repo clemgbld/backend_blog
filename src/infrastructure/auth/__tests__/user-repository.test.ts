@@ -10,7 +10,7 @@ let connection: MongoClient;
 let mongoServer: MongoMemoryServer;
 let userRepository: ReturnType<typeof buildUserRepository>;
 
-describe("user repositories", () => {
+describe("user repository", () => {
   const email = "exemple@gmail.com";
   const password = "password";
 
