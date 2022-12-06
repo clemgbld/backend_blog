@@ -8,9 +8,14 @@ export type ArticleWithStringifyContent = {
   lightMode: boolean;
 };
 
+export type DeletedData = {
+  acknowledged: boolean;
+  deletedCount: number;
+};
+
 export type ArticlesRepository = {
   add: (article: ArticleWithStringifyContent) => Promise<void>;
-  delete: (id: string) => Promise<ArticleWithStringifyContent | undefined>;
+  delete: (id: string) => Promise<DeletedData | undefined>;
   all: () => Promise<ArticleWithStringifyContent[]>;
   update: (
     article: ArticleWithStringifyContent

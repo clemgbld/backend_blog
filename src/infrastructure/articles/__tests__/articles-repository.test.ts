@@ -62,5 +62,17 @@ describe("articles repository", () => {
     const { article, id } = generateArticle();
     await articlesRepository.add(article);
     const deletedArticle = await articlesRepository.delete(id);
+    expect(await articlesRepository.one(id)).toEqual(undefined);
+    expect(deletedArticle).toEqual({
+      acknowledged: true,
+      deletedCount: 1,
+    });
+  });
+
+  it("should be undefined when it deleted nothing", async () => {
+    const idGenerator = buildIdGenerator();
+    const id = idGenerator.makeId();
+    const deletedArticle = await articlesRepository.delete(id);
+    expect(deletedArticle).toBe(undefined);
   });
 });

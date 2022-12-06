@@ -15,7 +15,7 @@ export const buildInMemoryArticlesRepository = () => {
     const deletedArticle = await one(id);
     const articleToDelete: any = [...db].find(({ key }) => key === id);
     db.delete(articleToDelete);
-    return deletedArticle;
+    return deletedArticle ? { acknowledged: true, deletedCount: 1 } : undefined;
   };
 
   const all = () => [...db].map((db) => db.value);

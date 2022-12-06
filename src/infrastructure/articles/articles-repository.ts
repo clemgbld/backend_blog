@@ -1,6 +1,8 @@
 import { Db } from "mongodb";
-import { ArticleWithStringifyContent } from "../../core/articles/repositories/articles-repository";
-import { Article } from "../../core/articles/entites/articles";
+import {
+  ArticleWithStringifyContent,
+  DeletedData,
+} from "../../core/articles/repositories/articles-repository";
 import { adaptDataForApp, adaptDataForMongoDb } from "../db/utils/adapt-data";
 
 export const buildArticlesRepository = (db: Db) => {
@@ -9,8 +11,11 @@ export const buildArticlesRepository = (db: Db) => {
     add: async (article: ArticleWithStringifyContent) => {
       await collection.insertOne(adaptDataForMongoDb(article));
     },
-    one: async (id: string): Promise<Article | undefined> =>
+    one: async (id: string): Promise<ArticleWithStringifyContent | undefined> =>
       adaptDataForApp(await collection.findOne({ _id: id })),
-    delete: async (id: string) => {},
+    delete: async (id: string): Promise<DeletedData | undefined> => {
+      const deletedArticle = await collection.deleteOne({ _id: id });
+      return deletedArticle.deletedCount > 0 ? deletedArticle : undefined;
+    },
   };
 };

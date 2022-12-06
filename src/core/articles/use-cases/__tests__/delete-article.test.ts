@@ -34,7 +34,7 @@ describe("delete article", () => {
       { ...article1, content: JSON.stringify(article1.content) },
     ]);
 
-    expect(deletedArticle).toEqual(article2);
+    expect(deletedArticle).toEqual({ acknowledged: true, deletedCount: 1 });
   });
 
   it("should be null when no article has been deleted", async () => {
