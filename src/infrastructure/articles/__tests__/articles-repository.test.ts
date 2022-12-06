@@ -75,4 +75,20 @@ describe("articles repository", () => {
     const deletedArticle = await articlesRepository.delete(id);
     expect(deletedArticle).toBe(undefined);
   });
+
+  it("should be update an article", async () => {
+    const { article: originalArticle, id } = generateArticle();
+    await articlesRepository.add(originalArticle);
+    const updatedArticle = { ...originalArticle, title: "title 2" };
+    const expectedArticle = await articlesRepository.update(updatedArticle);
+    const expectedArticleFromDb = await articlesRepository.one(id);
+    expect(expectedArticle).toEqual(updatedArticle);
+    expect(expectedArticleFromDb).toEqual(updatedArticle);
+  });
+
+  it("should get all the articles", async () => {
+    const { article } = generateArticle();
+    await articlesRepository.add(article);
+    expect(await articlesRepository.all()).toEqual([article]);
+  });
 });

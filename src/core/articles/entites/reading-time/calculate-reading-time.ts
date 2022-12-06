@@ -11,15 +11,11 @@ const insertReadingTimeInTemplate = (readingTime: number): string =>
   `${readingTime} min read`;
 
 const extractAllWordsFromContent = (
-  content: Record<
-    string,
-    string | number | Record<string, string | number>[]
-  >[],
-  articlesText = ""
+  content: Record<string, string | number | Record<string, string | number>[]>[]
 ): string =>
   content.reduce(
-    (acc: string, el) => `${acc} ${extractWordFromContent(el)}`,
-    articlesText
+    (acc, el) => `${acc} ${extractWordFromContent(el)}`,
+    ""
   );
 
 function extractWordFromContent(content: Record<string, any>) {
@@ -38,3 +34,4 @@ const calcReadingTimeOperations = pipe(
 export const calcReadingTime = (
   content: Record<string, string | number | Record<string, string | number>[]>[]
 ) => calcReadingTimeOperations(content);
+
