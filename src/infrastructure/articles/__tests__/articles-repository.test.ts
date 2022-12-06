@@ -100,4 +100,12 @@ describe("articles repository", () => {
     await articlesRepository.add(hiddenArticle2);
     expect(await articlesRepository.allPuplished()).toEqual([article]);
   });
+
+  it("should not retrieve non published article", async () => {
+    const { article, id } = generateArticle();
+    const hiddenArticle = { ...article, hide: true };
+    await articlesRepository.add(hiddenArticle);
+    const expectedArticle = await articlesRepository.one(id);
+    expect(expectedArticle).toBe(undefined);
+  });
 });

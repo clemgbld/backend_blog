@@ -24,7 +24,7 @@ export const buildArticlesRepository = (db: Db) => {
       await collection.insertOne(adaptDataForMongoDb(article));
     },
     one: async (id: string): Promise<ArticleWithStringifyContent | undefined> =>
-      adaptDataForApp(await collection.findOne({ _id: id })),
+      adaptDataForApp(await collection.findOne({ _id: id, hide: false })),
     delete: async (id: string): Promise<DeletedData | undefined> => {
       const deletedArticle = await collection.deleteOne({ _id: id });
       return deletedArticle.deletedCount > 0 ? deletedArticle : undefined;
