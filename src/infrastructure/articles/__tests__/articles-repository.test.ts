@@ -91,4 +91,13 @@ describe("articles repository", () => {
     await articlesRepository.add(article);
     expect(await articlesRepository.all()).toEqual([article]);
   });
+
+  it("should get all the published articles only", async () => {
+    const { article } = generateArticle();
+    await articlesRepository.add(article);
+    const { article: article2 } = generateArticle();
+    const hiddenArticle2 = { ...article2, hide: true };
+    await articlesRepository.add(hiddenArticle2);
+    expect(await articlesRepository.allPuplished()).toEqual([article]);
+  });
 });

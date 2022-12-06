@@ -3,14 +3,22 @@ import {
   ArticleWithStringifyContent,
   DeletedData,
 } from "../../core/articles/repositories/articles-repository";
-import { adaptDataForApp, adaptDataForMongoDb } from "../db/utils/adapt-data";
+import {
+  adaptDataForApp,
+  adaptDataForMongoDb,
+  adaptDataListForApp,
+} from "../db/utils/adapt-data";
 
 export const buildArticlesRepository = (db: Db) => {
   const collection = db.collection("articles");
   return {
-    all: async () => {
+    all: async (): Promise<ArticleWithStringifyContent[]> => {
       const articlesFromDb = await collection.find().toArray();
-      return articlesFromDb.map((article) => adaptDataForApp(article));
+      return adaptDataListForApp(articlesFromDb);
+    },
+    allPuplished: async (): Promise<ArticleWithStringifyContent[]> => {
+      const articlesFromDb = await collection.find({ hide: false }).toArray();
+      return adaptDataListForApp(articlesFromDb);
     },
     add: async (article: ArticleWithStringifyContent) => {
       await collection.insertOne(adaptDataForMongoDb(article));

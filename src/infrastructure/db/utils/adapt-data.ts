@@ -12,3 +12,6 @@ export const adaptDataForApp = (data: any) => {
   delete adaptedData._id;
   return { id, ...adaptedData };
 };
+
+export const adaptDataListForApp = (dataList: any[]) =>
+  dataList.map((data) => adaptDataForApp(data));
