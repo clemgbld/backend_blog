@@ -9,6 +9,7 @@ type ArticleProps = {
   hide?: boolean;
   content?: Record<string, any>[];
   lightMode?: boolean;
+  topic?: string | null;
 };
 
 export const buildArticle = ({
@@ -19,6 +20,7 @@ export const buildArticle = ({
   hide = false,
   content = [],
   lightMode = false,
+  topic = null,
 }: ArticleProps) => {
   articleValidation({ id, title, content, date });
 
@@ -31,6 +33,7 @@ export const buildArticle = ({
     content,
     lightMode,
     timeToRead: calcReadingTime(content),
+    topic,
   };
 };
 

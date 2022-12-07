@@ -30,6 +30,7 @@ describe("articles", () => {
         content,
         lightMode: false,
         timeToRead: "1 min read",
+        topic: null,
       });
     });
     it("should be able to handle article with complex data structure", () => {
@@ -60,6 +61,7 @@ describe("articles", () => {
         timeToRead: "4 min read",
         lightMode: false,
         hide: false,
+        topic: null,
       });
     });
 
@@ -93,6 +95,7 @@ describe("articles", () => {
         timeToRead: "5 min read",
         lightMode: false,
         hide: false,
+        topic: null,
       });
     });
   });

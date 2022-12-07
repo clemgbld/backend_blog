@@ -266,6 +266,7 @@ describe("articles controllers", () => {
           summary: "summary 1",
           date: 123456,
           content: [{ type: "h1", id: "1", text: "hello" }],
+          topic: "topic 1",
         });
 
         const response = await request(app)

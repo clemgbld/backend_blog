@@ -40,6 +40,7 @@ export const postHandler = catchAsync(async (req: Request, res: Response) => {
     title: req.body.title,
     summary: req.body.summary,
     content: req.body.content,
+    topic: req.body.topic,
   });
 
   await postArticle({
