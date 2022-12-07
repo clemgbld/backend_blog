@@ -13,3 +13,11 @@ export const initDB = async () => {
 
   return { db, connection, mongoServer };
 };
+
+export const initRealDB = async () => {
+  const url = process.env.DB || "";
+  const dbName = process.env.DB_NAME;
+  const client = new MongoClient(url);
+  await client.connect();
+  return client.db(dbName);
+};

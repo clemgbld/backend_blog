@@ -15,7 +15,7 @@ export const buildTokenGenerator = () => ({
 
     return {
       token,
-      expiresIn: daysToMilliseconds(process.env.JWT_EXPIRES_IN || ""),
+      expirationDate: daysToMilliseconds(process.env.JWT_EXPIRES_IN || ""),
     };
   },
 
@@ -23,9 +23,9 @@ export const buildTokenGenerator = () => ({
     const verify: any = promisify(jwt.verify);
 
     const decoded = await verify(token, process.env.JWT_SECRET);
-
+    const id: string = decoded.id;
     return {
-      id: decoded.id,
+      id,
     };
   },
 });
