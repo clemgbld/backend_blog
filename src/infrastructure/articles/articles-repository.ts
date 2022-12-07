@@ -7,6 +7,7 @@ import {
   adaptDataForApp,
   adaptDataForMongoDb,
   adaptDataListForApp,
+  adaptIdForMongoDB,
 } from "../db/utils/adapt-data";
 
 export const buildArticlesRepository = (db: Db) => {
@@ -24,16 +25,20 @@ export const buildArticlesRepository = (db: Db) => {
       await collection.insertOne(adaptDataForMongoDb(article));
     },
     one: async (id: string): Promise<ArticleWithStringifyContent | undefined> =>
-      adaptDataForApp(await collection.findOne({ _id: id, hide: false })),
+      adaptDataForApp(
+        await collection.findOne({ _id: adaptIdForMongoDB(id), hide: false })
+      ),
     delete: async (id: string): Promise<DeletedData | undefined> => {
-      const deletedArticle = await collection.deleteOne({ _id: id });
+      const deletedArticle = await collection.deleteOne({
+        _id: adaptIdForMongoDB(id),
+      });
       return deletedArticle.deletedCount > 0 ? deletedArticle : undefined;
     },
     update: async (
       article: ArticleWithStringifyContent
     ): Promise<ArticleWithStringifyContent | undefined> => {
       const result = await collection.findOneAndUpdate(
-        { _id: article.id },
+        { _id: adaptIdForMongoDB(article.id) },
         { $set: adaptDataForMongoDb(article) },
         { returnDocument: "after" }
       );

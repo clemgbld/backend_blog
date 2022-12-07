@@ -1,6 +1,10 @@
 import { Db } from "mongodb";
 import { User } from "../../core/auth/entities/user";
-import { adaptDataForApp, adaptDataForMongoDb } from "../db/utils/adapt-data";
+import {
+  adaptDataForApp,
+  adaptDataForMongoDb,
+  adaptIdForMongoDB,
+} from "../db/utils/adapt-data";
 
 export const buildUserRepository = (db: Db) => {
   const collection = db.collection("users");
@@ -12,7 +16,11 @@ export const buildUserRepository = (db: Db) => {
       const userFromDb = await collection.findOne({ email });
       return adaptDataForApp(userFromDb);
     },
-    findById: async (id: string): Promise<User | undefined> =>
-      adaptDataForApp(await collection.findOne({ _id: id })),
+    findById: async (id: string): Promise<User | undefined> => {
+      const userFromDb = await collection.findOne({
+        _id: adaptIdForMongoDB(id),
+      });
+      return adaptDataForApp(userFromDb);
+    },
   };
 };

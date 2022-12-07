@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { promisify } from "util";
 
 function daysToMilliseconds(days: string): number {
   const seconds = parseInt(days, 10) * 86400;
@@ -20,10 +19,19 @@ export const buildTokenGenerator = () => ({
   },
 
   decode: async (token: string) => {
-    const verify: any = promisify(jwt.verify);
+    const verifyTokenAsync = (token: string, secret: string) => {
+      return new Promise((resolve, reject) => {
+        jwt.verify(token, secret, (err, data) => {
+          if (err) return reject(err);
+          return resolve(data);
+        });
+      });
+    };
+    const verifyPromise = verifyTokenAsync(token, process.env.JWT_SECRET || "");
 
-    const decoded = await verify(token, process.env.JWT_SECRET);
+    const decoded: any = await verifyPromise;
     const id: string = decoded.id;
+
     return {
       id,
     };
