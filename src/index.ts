@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(mongoSanitize());
 app.use(xss());
 app.use((req, res: any, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000/");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH"
