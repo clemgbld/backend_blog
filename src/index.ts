@@ -53,6 +53,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.options("/*", (_, res) => {
+  res.sendStatus(200);
+});
+
 const unhandledError = (message: string, err: Error) => {
   console.log(err.name, err.message);
   console.log(`${message} (__)。゜zｚＺ Shutting down...`);
