@@ -206,6 +206,7 @@ describe("articles controllers", () => {
           id: "123",
           title: "title 1",
           summary: "summary 1",
+          topic: "topic 1",
           date: 12345,
           content: [{ type: "h1", id: "1", text: "hello" }],
           hide: true,
@@ -267,6 +268,8 @@ describe("articles controllers", () => {
           date: 123456,
           content: [{ type: "h1", id: "1", text: "hello" }],
           topic: "topic 1",
+          hide: true,
+          lightMode: true,
         });
 
         const response = await request(app)
@@ -284,12 +287,14 @@ describe("articles controllers", () => {
           data: article,
         });
 
-        const articleAdded = await articlesRepository.one("FAKE_ID");
+        const articleAdded = await articlesRepository.all();
 
-        expect(articleAdded).toEqual({
-          ...article,
-          content: JSON.stringify(article.content),
-        });
+        expect(articleAdded).toEqual([
+          {
+            ...article,
+            content: JSON.stringify(article.content),
+          },
+        ]);
       });
     });
   });

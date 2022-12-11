@@ -12,6 +12,7 @@ import { throw400ErrorWhenIdDoesNotExist } from "../../error/throw-error";
 export const updateHandler = catchAsync(async (req: Request, res: Response) => {
   const article = buildArticle({
     id: req.body.id,
+    topic: req.body.topic,
     title: req.body.title,
     summary: req.body.summary,
     date: req.body.date,
@@ -41,6 +42,8 @@ export const postHandler = catchAsync(async (req: Request, res: Response) => {
     summary: req.body.summary,
     content: req.body.content,
     topic: req.body.topic,
+    hide: req.body.hide,
+    lightMode: req.body.lightMode,
   });
 
   await postArticle({
