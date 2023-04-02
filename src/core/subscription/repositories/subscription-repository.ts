@@ -1,7 +1,4 @@
-type SubscriptionEmail = {
-  id: string;
-  email: string;
-};
+import { SubscriptionEmail } from "../subscription-email";
 
 export type SubscriptionRepository = {
   all: () => Promise<SubscriptionEmail[]>;
