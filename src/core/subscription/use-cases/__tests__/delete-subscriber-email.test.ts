@@ -33,6 +33,6 @@ describe("delete subscriber email", () => {
 
     await expect(async () =>
       deleteSubscriberEmail({ subscriptionRepository, id })
-    ).rejects.toThrowError(`subscriber email with the id ${id} does not exist`);
+    ).rejects.toThrowError(`Subscriber email with the id ${id} does not exist`);
   });
 });
