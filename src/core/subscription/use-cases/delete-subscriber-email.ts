@@ -7,5 +7,9 @@ export const deleteSubscriberEmail = async ({
   subscriptionRepository: SubscriptionRepository;
   id: string;
 }) => {
-  await subscriptionRepository.delete(id);
+  const isFailure = await subscriptionRepository.delete(id);
+
+  if (isFailure) {
+    throw new Error(`subscriber email with the id ${id} does not exist`);
+  }
 };

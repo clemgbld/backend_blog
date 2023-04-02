@@ -7,7 +7,8 @@ export const buildInMemorySubscriptionRepository = (
     Object.entries(subscriberEmailsStore).map(([id, email]) => ({ id, email })),
 
   delete: async (id: string) => {
+    const email = subscriberEmailsStore[id];
     delete subscriberEmailsStore[id];
-    return subscriberEmailsStore[id] ? false : true;
+    return !email;
   },
 });
