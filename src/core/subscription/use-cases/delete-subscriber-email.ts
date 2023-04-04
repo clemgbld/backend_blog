@@ -1,5 +1,5 @@
-import { SubscriptionRepository } from "../repositories/subscription-repository";
-import { throwDeleteErrorMessage } from "../exceptions/throw-delete-error-msg";
+import { SubscriptionRepository } from "../domain/repositories/subscription-repository";
+import { throwDeleteErrorMessage } from "../domain/exceptions/throw-delete-error-msg";
 
 export const deleteSubscriberEmail = async ({
   subscriptionRepository,

@@ -1,4 +1,4 @@
-import { SubscriptionRepository } from "../../core/subscription/repositories/subscription-repository";
+import { SubscriptionRepository } from "../../core/subscription/domain/repositories/subscription-repository";
 
 export const buildInMemorySubscriptionRepository = (
   subscriberEmailsStore: Record<string, string>

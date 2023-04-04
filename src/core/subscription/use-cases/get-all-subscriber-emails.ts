@@ -1,4 +1,4 @@
-import { SubscriptionRepository } from "../repositories/subscription-repository";
+import { SubscriptionRepository } from "../domain/repositories/subscription-repository";
 
 export const getAllSubscriberEmails = async (
   subscriptionRepository: SubscriptionRepository
