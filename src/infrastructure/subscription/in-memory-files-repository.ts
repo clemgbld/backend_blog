@@ -1,1 +1,1 @@
-export const buildInMemoryFilesRepository = () => ({});
+export const buildInMemoryFilesRepository = (fileContent:string) => ({});
