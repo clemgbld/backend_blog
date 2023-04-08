@@ -931,7 +931,7 @@ describe("notify subscribers", () => {
                     "
                     class="paragraph"
                   >
-                    #SUMMARY
+                    ${emailContentIn.summary}
                   </td>
                 </tr>
                 <tr>
