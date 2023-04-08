@@ -2,6 +2,7 @@ import { EmailContentIn } from "../../../app/subscription/dto/email-content-in";
 import { SubscriptionRepository } from "../domain/repositories/subscription-repository";
 import { FilesRepository } from "../domain/repositories/files-repository";
 import { EmailService } from "../domain/gateway/email-service";
+import { SUBJET_WORDING } from "../domain/email-constants";
 
 export const notifySubscibers = async ({
   emailContentIn,
@@ -14,5 +15,9 @@ export const notifySubscibers = async ({
   filesRepository: FilesRepository;
   emailService: EmailService;
 }) => {
-  await emailService.sendEmail({ to: "", subject: "", html: "" });
+  await emailService.sendEmail({
+    to: "",
+    subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
+    html: "",
+  });
 };
