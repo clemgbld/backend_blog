@@ -4,5 +4,5 @@ import { FilesRepository } from "../../core/subscription/domain/repositories/fil
 export const buildInMemoryFilesRepository = (
   fileContent: string
 ): FilesRepository => ({
-  readFile: async (path: string, unicode: string) => "",
+  readFile: async (path: string, unicode: string) => fileContent,
 });

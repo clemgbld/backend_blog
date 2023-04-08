@@ -16,9 +16,11 @@ export const notifySubscibers = async ({
   filesRepository: FilesRepository;
   emailService: EmailService;
 }) => {
+  const emailTemplate = await filesRepository.readFile("", "utf8");
+
   await emailService.sendEmail({
     to: await buildEmailListStr(subscriptionRepository),
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
-    html: "",
+    html: emailTemplate,
   });
 };
