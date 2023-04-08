@@ -1,5 +1,7 @@
 import { buildInMemoryFilesRepository } from "../../../../infrastructure/subscription/in-memory-files-repository";
 import { buildInMemorySubscriptionRepository } from "../../../../infrastructure/subscription/in-memory-subscription-repository";
+import { buildInMemoryEmailService } from "../../../../infrastructure/subscription/in-memory-email-service";
+import { notifySubscibers } from "../notify-subscribers";
 
 const emailTemplate = `<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -487,24 +489,43 @@ const emailTemplate = `<html xmlns="http://www.w3.org/1999/xhtml">
     </tr>
   </table>
 </body>
-</html>`
+</html>`;
 
-describe("notify subscribers",()=>{
-  it('should notify all the subscribers by email when a new article is published', async () => {
+describe("notify subscribers", () => {
+  it("should notify all the subscribers by email when a new article is published", async () => {
     const filesRepository = buildInMemoryFilesRepository(emailTemplate);
     const subscriberEmailsStore = {
-        "1": "exemple@hotmail.fr",
-        "2": "exemple2@hotmail.fr",
-      };
-      const subscriptionRepository = buildInMemorySubscriptionRepository(
-        subscriberEmailsStore
-      );
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
 
-      const emailContentIn = {
-        title:"title",
-        id:"id",
-        summary:"summary",
-        img:"img",
-      }
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "How to use the useState hook",
+      id: "1",
+      summary: "summary",
+      img: "imgSrc",
+      tag: "React",
+      timeToRead: "7 min to read",
+    };
+
+    await notifySubscibers({
+      emailContentIn,
+      subscriptionRepository,
+      filesRepository,
+      emailService,
+    });
+
+    expect(emailServiceSpy).toHaveBeenCalledWith({
+      to: "",
+      subject: "",
+      html: "",
+    });
   });
-})
+});
