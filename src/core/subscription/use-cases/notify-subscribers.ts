@@ -15,8 +15,12 @@ export const notifySubscibers = async ({
   filesRepository: FilesRepository;
   emailService: EmailService;
 }) => {
+  const emails = await subscriptionRepository.all();
+
+  const transformedEmails = emails.map(({ email }) => email).join(", ");
+
   await emailService.sendEmail({
-    to: "",
+    to: transformedEmails,
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
     html: "",
   });

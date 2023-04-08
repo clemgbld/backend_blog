@@ -523,7 +523,7 @@ describe("notify subscribers", () => {
     });
 
     expect(emailServiceSpy).toHaveBeenCalledWith({
-      to: "",
+      to: "exemple@hotmail.fr, exemple2@hotmail.fr",
       subject: "A new Article has been published: How to use the useState hook",
       html: "",
     });
