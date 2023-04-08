@@ -23,6 +23,7 @@ export const notifySubscibers = async ({
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
     html: emailTemplate
       .replace(/#TITLE/g, emailContentIn.title || "")
-      .replace("#IMG_SRC", emailContentIn.img || ""),
+      .replace("#IMG_SRC", emailContentIn.img || "")
+      .replace("#TOPIC", emailContentIn.tag || ""),
   });
 };

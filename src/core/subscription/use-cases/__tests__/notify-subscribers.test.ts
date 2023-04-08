@@ -882,7 +882,7 @@ describe("notify subscribers", () => {
                   "
                   class="paragraph"
                 >
-                  Topic: #TOPIC
+                  Topic: ${emailContentIn.tag}
                 </td>
                 </tr>
                 <tr>
