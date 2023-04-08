@@ -538,7 +538,7 @@ describe("notify subscribers", () => {
       id: "1",
       summary: "summary",
       img: "imgSrc",
-      tag: "React",
+      topic: "React",
       timeToRead: "7 min to read",
     };
 
@@ -882,7 +882,7 @@ describe("notify subscribers", () => {
                   "
                   class="paragraph"
                 >
-                  Topic: ${emailContentIn.tag}
+                  Topic: ${emailContentIn.topic}
                 </td>
                 </tr>
                 <tr>

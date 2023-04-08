@@ -24,6 +24,6 @@ export const notifySubscibers = async ({
     html: emailTemplate
       .replace(/#TITLE/g, emailContentIn.title || "")
       .replace("#IMG_SRC", emailContentIn.img || "")
-      .replace("#TOPIC", emailContentIn.tag || ""),
+      .replace("#TOPIC", emailContentIn.topic || ""),
   });
 };
