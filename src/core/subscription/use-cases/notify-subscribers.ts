@@ -21,6 +21,6 @@ export const notifySubscibers = async ({
   await emailService.sendEmail({
     to: await buildEmailListStr(subscriptionRepository),
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
-    html: emailTemplate,
+    html: emailTemplate.replace(/#TITLE/g, emailContentIn.title || ""),
   });
 };

@@ -817,7 +817,7 @@ describe("notify subscribers", () => {
                     "
                     class="subheader"
                   >
-                    #TITLE
+                    ${emailContentIn.title}
                   </td>
                 </tr>
                 <tr>
@@ -842,7 +842,7 @@ describe("notify subscribers", () => {
                         vspace="0"
                         hspace="0"
                         src="#IMG_SRC"
-                        alt="#TITLE"
+                        alt="${emailContentIn.title}"
                         width="560"
                         style="
                           object-fit: cover;
