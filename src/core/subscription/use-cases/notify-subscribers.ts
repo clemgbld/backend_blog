@@ -16,16 +16,41 @@ export const notifySubscibers = async ({
   filesRepository: FilesRepository;
   emailService: EmailService;
 }) => {
+  if (!emailContentIn.title) {
+    throw new Error("title is mandatory");
+  }
+
+  if (!emailContentIn.id) {
+    throw new Error("id is mandatory");
+  }
+
+  if (!emailContentIn.summary) {
+    throw new Error("summary is mandatory");
+  }
+
+  if (!emailContentIn.img) {
+    throw new Error("img is mandatory");
+  }
+
+  if (!emailContentIn.topic) {
+    throw new Error("topic is mandatory");
+  }
+
+  if (!emailContentIn.timeToRead) {
+    throw new Error("timeToRead is mandatory");
+  }
+
   const emailTemplate = await filesRepository.readFile("", "utf8");
 
   await emailService.sendEmail({
     to: await buildEmailListStr(subscriptionRepository),
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
     html: emailTemplate
-      .replace(/#TITLE/g, emailContentIn.title || "")
-      .replace("#IMG_SRC", emailContentIn.img || "")
-      .replace("#TOPIC", emailContentIn.topic || "")
-      .replace("#SUMMARY", emailContentIn.summary || "")
-      .replace(/#ID/g, emailContentIn.id || ""),
+      .replace(/#TITLE/g, emailContentIn.title)
+      .replace("#IMG_SRC", emailContentIn.img)
+      .replace("#TOPIC", emailContentIn.topic)
+      .replace("#SUMMARY", emailContentIn.summary)
+      .replace(/#ID/g, emailContentIn.id)
+      .replace("#TIME_TO_READ", emailContentIn.timeToRead),
   });
 };

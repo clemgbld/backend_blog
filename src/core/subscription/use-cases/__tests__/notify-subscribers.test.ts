@@ -906,7 +906,7 @@ describe("notify subscribers", () => {
                   "
                   class="paragraph"
                 >
-                  Time to read: #TIME_TO_READ
+                  Time to read: ${emailContentIn.timeToRead}
                 </td>
                 </tr>
                 <tr>
@@ -1067,5 +1067,197 @@ describe("notify subscribers", () => {
         .replace(/\s+/g, " ")
         .trim(),
     });
+  });
+
+  it("should throw an error when there is no title", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      id: "1",
+      summary: "summary",
+      img: "imgSrc",
+      topic: "React",
+      timeToRead: "7 min to read",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("title is mandatory");
+  });
+
+  it("should throw an error when there is no id", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "title",
+      summary: "summary",
+      img: "imgSrc",
+      topic: "React",
+      timeToRead: "7 min to read",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("id is mandatory");
+  });
+
+  it("should throw an error when there is no summary", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "title",
+      id: "1",
+      img: "imgSrc",
+      topic: "React",
+      timeToRead: "7 min to read",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("summary is mandatory");
+  });
+
+  it("should throw an error when there is no img", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "tile",
+      id: "1",
+      summary: "summary",
+      topic: "React",
+      timeToRead: "7 min to read",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("img is mandatory");
+  });
+
+  it("should throw an error when there is no topic", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "title",
+      id: "1",
+      summary: "summary",
+      img: "imgSrc",
+      timeToRead: "7 min to read",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("topic is mandatory");
+  });
+
+  it("should throw an error when there is no time to read", async () => {
+    const filesRepository = buildInMemoryFilesRepository(emailTemplate);
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const emailServiceSpy = jest.fn();
+
+    const emailService = buildInMemoryEmailService({ emailServiceSpy });
+
+    const emailContentIn = {
+      title: "title",
+      id: "1",
+      summary: "summary",
+      img: "imgSrc",
+      topic: "React",
+    };
+
+    await expect(async () =>
+      notifySubscibers({
+        emailContentIn,
+        emailService,
+        filesRepository,
+        subscriptionRepository,
+      })
+    ).rejects.toThrowError("timeToRead is mandatory");
   });
 });
