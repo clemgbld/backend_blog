@@ -4,6 +4,7 @@ import { FilesRepository } from "../domain/repositories/files-repository";
 import { EmailService } from "../domain/gateway/email-service";
 import { SUBJET_WORDING } from "../domain/email-constants";
 import { buildEmailListStr } from "../domain/services/builld-email-list-str";
+import { validateEmailContentIn } from "../domain/services/validate-email-content-in";
 
 export const notifySubscibers = async ({
   emailContentIn,
@@ -16,29 +17,7 @@ export const notifySubscibers = async ({
   filesRepository: FilesRepository;
   emailService: EmailService;
 }) => {
-  if (!emailContentIn.title) {
-    throw new Error("title is mandatory");
-  }
-
-  if (!emailContentIn.id) {
-    throw new Error("id is mandatory");
-  }
-
-  if (!emailContentIn.summary) {
-    throw new Error("summary is mandatory");
-  }
-
-  if (!emailContentIn.img) {
-    throw new Error("img is mandatory");
-  }
-
-  if (!emailContentIn.topic) {
-    throw new Error("topic is mandatory");
-  }
-
-  if (!emailContentIn.timeToRead) {
-    throw new Error("timeToRead is mandatory");
-  }
+  validateEmailContentIn(emailContentIn);
 
   const emailTemplate = await filesRepository.readFile("", "utf8");
 
@@ -46,11 +25,11 @@ export const notifySubscibers = async ({
     to: await buildEmailListStr(subscriptionRepository),
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
     html: emailTemplate
-      .replace(/#TITLE/g, emailContentIn.title)
-      .replace("#IMG_SRC", emailContentIn.img)
-      .replace("#TOPIC", emailContentIn.topic)
-      .replace("#SUMMARY", emailContentIn.summary)
-      .replace(/#ID/g, emailContentIn.id)
-      .replace("#TIME_TO_READ", emailContentIn.timeToRead),
+      .replace(/#TITLE/g, `${emailContentIn.title}`)
+      .replace("#IMG_SRC", `${emailContentIn.img}`)
+      .replace("#TOPIC", `${emailContentIn.topic}`)
+      .replace("#SUMMARY", `${emailContentIn.summary}`)
+      .replace(/#ID/g, `${emailContentIn.id}`)
+      .replace("#TIME_TO_READ", `${emailContentIn.timeToRead}`),
   });
 };
