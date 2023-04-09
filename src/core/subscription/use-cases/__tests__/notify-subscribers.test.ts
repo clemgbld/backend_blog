@@ -836,7 +836,7 @@ describe("notify subscribers", () => {
                     <a
                       target="_blank"
                       style="text-decoration: none"
-                      href="https://blog-clement-gombauld.vercel.app/#ID"
+                      href="https://blog-clement-gombauld.vercel.app/${emailContentIn.id}"
                       ><img
                         border="0"
                         vspace="0"
@@ -952,7 +952,7 @@ describe("notify subscribers", () => {
                     class="button"
                   >
                     <a
-                      href="https://blog-clement-gombauld.vercel.app/#ID"
+                      href="https://blog-clement-gombauld.vercel.app/${emailContentIn.id}"
                       target="_blank"
                       style="text-decoration: underline"
                     >
@@ -996,7 +996,7 @@ describe("notify subscribers", () => {
                                 font-weight: 400;
                                 line-height: 120%;
                               "
-                              href="https://blog-clement-gombauld.vercel.app/#ID"
+                              href="https://blog-clement-gombauld.vercel.app/${emailContentIn.id}"
                             >
                               Read the article
                             </a>
