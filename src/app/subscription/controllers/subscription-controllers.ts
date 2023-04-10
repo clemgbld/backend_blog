@@ -3,6 +3,7 @@ import { notifySubscibers } from "../../../core/subscription/use-cases/notify-su
 import { AppError } from "../../error/app-error";
 import { catchAsync } from "../../error/catch-async";
 import { EmailContentIn } from "../dto/email-content-in";
+import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
 
 export const notifySubscribersHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -23,7 +24,7 @@ export const notifySubscribersHandler = catchAsync(
       });
     } catch (err) {
       if (err instanceof Error) {
-        throw new AppError(err.message, 404);
+        throw new AppError(err.message, mapErrorToHttpStatus(err.message));
       }
     }
 
