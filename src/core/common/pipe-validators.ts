@@ -1,10 +1,10 @@
-type Validator<T> = (params: T) => string | undefined;
+export type Validator<T, U> = (params: T) => U | undefined;
 
 export const pipeValidators =
-  <T>(...validators: Validator<T>[]) =>
+  <T, U>(...validators: Validator<T, U>[]) =>
   (params: T) =>
     validators.reduce(
-      (error: string | undefined, validator: Validator<T>) =>
+      (error: U | undefined, validator: Validator<T, U>) =>
         error || validator(params),
       undefined
     );
