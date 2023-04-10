@@ -106,5 +106,17 @@ describe("notify subscriberes controller", () => {
       .set("Authorization", "Bearer FAKE_TOKEN")
       .send(emailContentIn)
       .type("json");
+
+    expect(response.statusCode).toBe(404);
+
+    expect(response.headers["content-type"]).toEqual(
+      expect.stringContaining("json")
+    );
+
+    expect(response.body).toEqual({
+      status: "fail",
+      statusCode: 404,
+      message: "id is mandatory",
+    });
   });
 });
