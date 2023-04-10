@@ -7,12 +7,12 @@ import { EmailContentIn } from "../dto/email-content-in";
 export const notifySubscribersHandler = catchAsync(
   async (req: Request, res: Response) => {
     const emailContentIn: EmailContentIn = {
-      title: req.body?.title,
-      id: req.body?.id,
-      summary: req.body?.summary,
-      img: req.body?.img,
-      topic: req.body?.topic,
-      timeToRead: req.body?.timeToRead,
+      title: req.body.title,
+      id: req.body.id,
+      summary: req.body.summary,
+      img: req.body.img,
+      topic: req.body.topic,
+      timeToRead: req.body.timeToRead,
     };
     try {
       await notifySubscibers({
