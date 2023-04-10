@@ -18,9 +18,12 @@ export const notifySubscibers = async ({
   emailService: EmailService;
 }) => {
   validateEmailContentIn(emailContentIn);
-  const emailTemplate = await filesRepository.readFile("", "utf8");
+  const [emails, emailTemplate] = await Promise.all([
+    subscriptionRepository.all(),
+    filesRepository.readFile("", "utf8"),
+  ]);
   await emailService.sendEmail({
-    to: await buildEmailListStr(subscriptionRepository),
+    to: buildEmailListStr(emails),
     subject: `${SUBJET_WORDING} ${emailContentIn.title}`,
     html: emailTemplate
       .replace(/#TITLE/g, `${emailContentIn.title}`)
