@@ -6,8 +6,12 @@ export const deleteSubscriberEmail = async ({
   id,
 }: {
   subscriptionRepository: SubscriptionRepository;
-  id: string;
+  id: string | undefined;
 }) => {
+  if (!id) {
+    throw new Error("id is mandatory");
+  }
+
   const isFailure = await subscriptionRepository.delete(id);
 
   if (isFailure) {

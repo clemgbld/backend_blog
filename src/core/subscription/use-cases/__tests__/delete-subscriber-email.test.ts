@@ -35,4 +35,20 @@ describe("delete subscriber email", () => {
       deleteSubscriberEmail({ subscriptionRepository, id })
     ).rejects.toThrowError(`Subscriber email with the id ${id} does not exist`);
   });
+
+  it("should throw an error when there is no id", async () => {
+    const subscriberEmailsStore = {
+      "1": "exemple@hotmail.fr",
+      "2": "exemple2@hotmail.fr",
+    };
+    const subscriptionRepository = buildInMemorySubscriptionRepository(
+      subscriberEmailsStore
+    );
+
+    const id = undefined;
+
+    await expect(async () =>
+      deleteSubscriberEmail({ subscriptionRepository, id })
+    ).rejects.toThrowError(`id is mandatory`);
+  });
 });
