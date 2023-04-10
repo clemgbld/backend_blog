@@ -101,7 +101,7 @@ describe("articles controllers", () => {
       });
     });
 
-    it("should not let the operation happer when the user han no token", async () => {
+    it("should not let the operation happer when the user has no token", async () => {
       const response = await request(app)
         .delete("/api/v1/articles/delete/123")
         .set("Authorization", "Bearer")
