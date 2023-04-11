@@ -154,4 +154,19 @@ describe("delete subscriber email controller", () => {
       { id: "2", email: "exemple2@hotmail.fr" },
     ]);
   });
+
+  it("should be a bad request when the id does not exist in the storage source", async () => {
+    const response = await request(app)
+      .delete("/api/v1/subscription/delete/150")
+      .set("Authorization", "Bearer FAKE_TOKEN")
+      .type("json");
+
+    expect(response.statusCode).toBe(400);
+
+    expect(response.body).toEqual({
+      status: "fail",
+      statusCode: 400,
+      message: "Subscriber email with the id 150 does not exist",
+    });
+  });
 });

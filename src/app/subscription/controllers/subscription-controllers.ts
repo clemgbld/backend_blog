@@ -9,10 +9,19 @@ import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
 
 export const deleteSubscriberEmailHandler = catchAsync(
   async (req: Request, res: Response) => {
-    await deleteSubscriberEmail({
-      subscriptionRepository: req.subscriptionService.subscriptionRepository,
-      id: req.params.id,
-    });
+    try {
+      await deleteSubscriberEmail({
+        subscriptionRepository: req.subscriptionService.subscriptionRepository,
+        id: req.params.id,
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new AppError(
+          err.message,
+          mapErrorToHttpStatus(err.message, req.params.id)
+        );
+      }
+    }
 
     return res.status(204).json({
       status: "success",
