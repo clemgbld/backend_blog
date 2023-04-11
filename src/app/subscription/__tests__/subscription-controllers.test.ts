@@ -121,7 +121,7 @@ describe("notify subscriberes controller", () => {
   });
 });
 
-describe("get subscribers emails controllers", () => {
+describe("get subscribers emails controller", () => {
   it("should retrieve all subscribers emails", async () => {
     const response = await request(app)
       .get("/api/v1/subscription")
@@ -138,5 +138,20 @@ describe("get subscribers emails controllers", () => {
         { id: "2", email: "exemple2@hotmail.fr" },
       ],
     });
+  });
+});
+
+describe("delete subscriber email controller", () => {
+  it("should delete the expected subscriber email", async () => {
+    const response = await request(app)
+      .delete("/api/v1/subscription/delete/1")
+      .set("Authorization", "Bearer FAKE_TOKEN")
+      .type("json");
+
+    expect(response.statusCode).toBe(204);
+
+    expect(await subscriptionRepository.all()).toEqual([
+      { id: "2", email: "exemple2@hotmail.fr" },
+    ]);
   });
 });

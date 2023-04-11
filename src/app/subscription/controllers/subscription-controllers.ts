@@ -1,10 +1,25 @@
 import { Request, Response } from "express";
 import { notifySubscibers } from "../../../core/subscription/use-cases/notify-subscribers";
 import { getAllSubscriberEmails } from "../../../core/subscription/use-cases/get-all-subscriber-emails";
+import { deleteSubscriberEmail } from "../../../core/subscription/use-cases/delete-subscriber-email";
 import { AppError } from "../../error/app-error";
 import { catchAsync } from "../../error/catch-async";
 import { EmailContentIn } from "../dto/email-content-in";
 import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
+
+export const deleteSubscriberEmailHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    await deleteSubscriberEmail({
+      subscriptionRepository: req.subscriptionService.subscriptionRepository,
+      id: req.params.id,
+    });
+
+    return res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  }
+);
 
 export const getAllSubscriberEmailsHandler = catchAsync(
   async (req: Request, res: Response) => {
