@@ -1,9 +1,23 @@
 import { Request, Response } from "express";
 import { notifySubscibers } from "../../../core/subscription/use-cases/notify-subscribers";
+import { getAllSubscriberEmails } from "../../../core/subscription/use-cases/get-all-subscriber-emails";
 import { AppError } from "../../error/app-error";
 import { catchAsync } from "../../error/catch-async";
 import { EmailContentIn } from "../dto/email-content-in";
 import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
+
+export const getAllSubscriberEmailsHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const emails = await getAllSubscriberEmails(
+      req.subscriptionService.subscriptionRepository
+    );
+    return res.status(200).json({
+      status: "success",
+      statusCode: 200,
+      data: emails,
+    });
+  }
+);
 
 export const notifySubscribersHandler = catchAsync(
   async (req: Request, res: Response) => {

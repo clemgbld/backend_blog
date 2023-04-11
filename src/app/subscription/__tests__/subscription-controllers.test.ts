@@ -107,7 +107,7 @@ describe("notify subscriberes controller", () => {
       .send(emailContentIn)
       .type("json");
 
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(400);
 
     expect(response.headers["content-type"]).toEqual(
       expect.stringContaining("json")
@@ -115,8 +115,28 @@ describe("notify subscriberes controller", () => {
 
     expect(response.body).toEqual({
       status: "fail",
-      statusCode: 404,
+      statusCode: 400,
       message: "id is mandatory",
+    });
+  });
+});
+
+describe("get subscribers emails controllers", () => {
+  it("should retrieve all subscribers emails", async () => {
+    const response = await request(app)
+      .get("/api/v1/subscription")
+      .set("Authorization", "Bearer FAKE_TOKEN")
+      .type("json");
+
+    expect(response.statusCode).toBe(200);
+
+    expect(response.body).toEqual({
+      status: "success",
+      statusCode: 200,
+      data: [
+        { id: "1", email: "exemple@hotmail.fr" },
+        { id: "2", email: "exemple2@hotmail.fr" },
+      ],
     });
   });
 });

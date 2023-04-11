@@ -3,13 +3,13 @@ const DEFAUL_HTTP_ERRO_CODE = 500;
 const buildErrorToStatusMapping = (id: string) => {
   const deleteSubscriberMessage = `Subscriber email with the id ${id} does not exist`;
   return {
-    "id is mandatory": 404,
-    "title is mandatory": 404,
-    "summary is mandatory": 404,
-    "img is mandatory": 404,
-    "topic is mandatory": 404,
-    "timeToRead is mandatory": 404,
-    [deleteSubscriberMessage]: 404,
+    "id is mandatory": 400,
+    "title is mandatory": 400,
+    "summary is mandatory": 400,
+    "img is mandatory": 400,
+    "topic is mandatory": 400,
+    "timeToRead is mandatory": 400,
+    [deleteSubscriberMessage]: 400,
   };
 };
 
