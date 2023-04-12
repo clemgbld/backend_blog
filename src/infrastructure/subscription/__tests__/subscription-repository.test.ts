@@ -1,4 +1,4 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, ObjectId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { initDB } from "../../db/db";
 import { buildIdGenerator } from "../../id/id-generator";
@@ -9,6 +9,7 @@ let db: Db;
 let connection: MongoClient;
 let mongoServer: MongoMemoryServer;
 let subscriptionRepository: SubscriptionRepository;
+const idGenrator = buildIdGenerator();
 
 beforeAll(async () => {
   const dbData = await initDB();
@@ -32,7 +33,15 @@ afterAll(async () => {
 });
 
 describe("mongo subscription repository", () => {
-  it("should ", () => {
-    console.log("wait");
+  it("should get all subscriber email", async () => {
+    const id = idGenrator.makeId();
+    const _id = new ObjectId(id);
+    const email = "email@example.com";
+
+    const subscriberEmail = { id, email };
+
+    await db.collection("emails").insertOne({ _id, email });
+
+    expect(await subscriptionRepository.all()).toEqual([subscriberEmail]);
   });
 });

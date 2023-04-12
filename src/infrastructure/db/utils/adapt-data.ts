@@ -11,6 +11,7 @@ export const adaptDataForMongoDb = (data: any) => {
 
 export const adaptDataForApp = (data: any) => {
   if (!data) return undefined;
+
   const id = data._id.toString();
   const adaptedData = { ...data };
   delete adaptedData._id;
