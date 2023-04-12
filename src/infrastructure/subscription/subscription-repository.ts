@@ -9,6 +9,10 @@ export const buildSubscripitonRepository = (db: Db): SubscriptionRepository => {
       const emailsFromDb = await collection.find().toArray();
       return adaptDataListForApp(emailsFromDb);
     },
-    delete: async (id) => true,
+    delete: async (id) => {
+      const doc = await collection.deleteOne({ _id: adaptIdForMongoDB(id) });
+
+      return doc.deletedCount < 1;
+    },
   };
 };
