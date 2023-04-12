@@ -1,3 +1,3 @@
 export type FilesRepository = {
-  readFile: (path: string, unicode: string) => Promise<string>;
+  readFile: (path: string, unicode: BufferEncoding) => Promise<string>;
 };

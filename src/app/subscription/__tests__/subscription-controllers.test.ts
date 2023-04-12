@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { EmailService } from "../../../core/subscription/domain/gateway/email-service";
 import { SubscriptionRepository } from "../../../core/subscription/domain/repositories/subscription-repository";
 import { EmailInfos } from "../../../core/subscription/domain/email-infos";
-import { buildInMemoryFilesRepository } from "../../../infrastructure/subscription/in-memory-files-repository";
+import { buildInMemoryFilesRepository } from "../../../infrastructure/files/in-memory-files-repository";
 import { buildInMemorySubscriptionRepository } from "../../../infrastructure/subscription/in-memory-subscription-repository";
 import { emailTemplate } from "../../../core/subscription/fixtures/email-template";
 import { buildSubscriptionMiddleware } from "../middlewares/subscription-middleware";

@@ -1,4 +1,4 @@
-import { buildInMemoryFilesRepository } from "../../../../infrastructure/subscription/in-memory-files-repository";
+import { buildInMemoryFilesRepository } from "../../../../infrastructure/files/in-memory-files-repository";
 import { buildInMemorySubscriptionRepository } from "../../../../infrastructure/subscription/in-memory-subscription-repository";
 import { buildInMemoryEmailService } from "../../../../infrastructure/subscription/in-memory-email-service";
 import { notifySubscibers } from "../notify-subscribers";
