@@ -32,16 +32,25 @@ afterAll(async () => {
   await connection.close();
 });
 
+const populateSubscriptionRepository = async () => {
+  const id = idGenrator.makeId();
+  const _id = new ObjectId(id);
+  const email = "email@example.com";
+  const subscriberEmail = { id, email };
+
+  await db.collection("emails").insertOne({ _id, email });
+
+  return subscriberEmail;
+};
+
 describe("mongo subscription repository", () => {
   it("should get all subscriber email", async () => {
-    const id = idGenrator.makeId();
-    const _id = new ObjectId(id);
-    const email = "email@example.com";
-
-    const subscriberEmail = { id, email };
-
-    await db.collection("emails").insertOne({ _id, email });
+    const subscriberEmail = await populateSubscriptionRepository();
 
     expect(await subscriptionRepository.all()).toEqual([subscriberEmail]);
+  });
+
+  it("should delete the expected id", async () => {
+    const subscriberEmail = await populateSubscriptionRepository();
   });
 });

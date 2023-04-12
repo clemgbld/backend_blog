@@ -1,11 +1,6 @@
 import { Db } from "mongodb";
 import { SubscriptionRepository } from "../../core/subscription/domain/repositories/subscription-repository";
-import {
-  adaptDataForApp,
-  adaptDataForMongoDb,
-  adaptDataListForApp,
-  adaptIdForMongoDB,
-} from "../db/utils/adapt-data";
+import { adaptDataListForApp, adaptIdForMongoDB } from "../db/utils/adapt-data";
 
 export const buildSubscripitonRepository = (db: Db): SubscriptionRepository => {
   const collection = db.collection("emails");
