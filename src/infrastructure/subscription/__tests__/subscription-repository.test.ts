@@ -3,7 +3,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { initDB } from "../../db/db";
 import { buildIdGenerator } from "../../id/id-generator";
 import { SubscriptionRepository } from "../../../core/subscription/domain/repositories/subscription-repository";
-import { buildSubscripitonRepository } from "../subscription-repository";
+import { buildSubscriptionsRepository } from "../subscription-repository";
 
 let db: Db;
 let connection: MongoClient;
@@ -19,7 +19,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  subscriptionRepository = buildSubscripitonRepository(db);
+  subscriptionRepository = buildSubscriptionsRepository(db);
 });
 
 afterEach(async () => {

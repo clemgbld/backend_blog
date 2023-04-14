@@ -2,7 +2,9 @@ import { Db } from "mongodb";
 import { SubscriptionRepository } from "../../core/subscription/domain/repositories/subscription-repository";
 import { adaptDataListForApp, adaptIdForMongoDB } from "../db/utils/adapt-data";
 
-export const buildSubscripitonRepository = (db: Db): SubscriptionRepository => {
+export const buildSubscriptionsRepository = (
+  db: Db
+): SubscriptionRepository => {
   const collection = db.collection("emails");
   return {
     all: async () => {

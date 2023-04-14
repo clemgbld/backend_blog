@@ -6,15 +6,21 @@ import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
 import { initRealDB } from "./infrastructure/db/db";
 import { buildUserRepository } from "./infrastructure/auth/user-repository";
+import { buildSubscriptionsRepository } from "./infrastructure/subscription/subscription-repository";
+import { buildFilesRepository } from "./infrastructure/files/files-repository";
+import { buildEmailService } from "./infrastructure/subscription/email-service";
 import { buildTokenGenerator } from "./infrastructure/auth/token-generator";
 import { buildAuthMiddlewareServices } from "./app/auth/middlewares/auth-middleware-services";
 import { authRouter } from "./app/auth/routes/auth-router";
+import { subscriptionRouter } from "./app/subscription/routes/subscription-router";
 import { buildTime } from "./infrastructure/time/time";
 import { buildIdGenerator } from "./infrastructure/id/id-generator";
 import { buildArticlesRepository } from "./infrastructure/articles/articles-repository";
 import { buildArticlesMiddleware } from "./app/articles/middlewares/articles-middleware";
 import { buildTimeMiddleware } from "./app/time/middlewares/time-middleware";
 import { buildIdMiddleware } from "./app/id/middlewares/id-middleware";
+import { buildSubscriptionMiddleware } from "./app/subscription/middlewares/subscription-middleware";
+import { buildFilesMiddleware } from "./app/files/middlewares/files-middleware";
 import { articlesRouter } from "./app/articles/routes/articles-router";
 import { AppError } from "./app/error/app-error";
 
@@ -76,6 +82,9 @@ initRealDB()
     console.log("db connection established");
     const userRepository = buildUserRepository(db);
     const articlesRepository = buildArticlesRepository(db);
+    const subscriptionRepository = buildSubscriptionsRepository(db);
+    const filesRepository = buildFilesRepository();
+    const emailService = buildEmailService();
     const tokenGenerator = buildTokenGenerator();
     const idGenerator = buildIdGenerator();
     const time = buildTime();
@@ -88,9 +97,23 @@ initRealDB()
       articlesRepository,
     });
 
+    const subscriptionMiddleware = buildSubscriptionMiddleware({
+      subscriptionRepository,
+      emailService,
+    });
+
+    const filesMiddleware = buildFilesMiddleware({ filesRepository });
+
     const timeMiddleware = buildTimeMiddleware({ time });
 
     const idMiddleware = buildIdMiddleware({ idGenerator });
+
+    app.use(
+      "/api/v1/subscription",
+      subscriptionMiddleware,
+      filesMiddleware,
+      subscriptionRouter
+    );
 
     app.use("/api/v1/users", authMiddleware, authRouter);
 
