@@ -1,3 +1,4 @@
+import path from "path";
 import { EmailContentIn } from "../../../app/subscription/dto/email-content-in";
 import { SubscriptionRepository } from "../domain/repositories/subscription-repository";
 import { FilesRepository } from "../domain/repositories/files-repository";
@@ -7,7 +8,15 @@ import { buildEmailListStr } from "../domain/services/builld-email-list-str";
 import { validateEmailContentIn } from "../domain/services/validate-email-content-in";
 import { fillEmailTemplate } from "../domain/services/fill-email-template";
 
-const EMAIL_TEMPLATE_PATH = "../../../templates/email.html";
+const EMAIL_TEMPLATE_PATH: string = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "..",
+  "templates",
+  "email.html"
+);
 
 export const notifySubscibers = async ({
   emailContentIn,

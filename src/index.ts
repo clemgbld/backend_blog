@@ -110,6 +110,7 @@ initRealDB()
 
     app.use(
       "/api/v1/subscription",
+      authMiddleware,
       subscriptionMiddleware,
       filesMiddleware,
       subscriptionRouter
