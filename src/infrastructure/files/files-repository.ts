@@ -6,7 +6,6 @@ export const buildFilesRepository = (): FilesRepository => ({
     try {
       return await fs.readFile(path, unicode);
     } catch (err) {
-      console.error(err);
       throw new Error("Reading file operation failed");
     }
   },

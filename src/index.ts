@@ -3,6 +3,7 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
+import compression from "compression";
 import xss from "xss-clean";
 import { initRealDB } from "./infrastructure/db/db";
 import { buildUserRepository } from "./infrastructure/auth/user-repository";
@@ -34,6 +35,8 @@ app.use(
     crossOriginEmbedderPolicy: false,
   })
 );
+
+app.use(compression());
 
 const limiter = rateLimit({
   max: 1000,
