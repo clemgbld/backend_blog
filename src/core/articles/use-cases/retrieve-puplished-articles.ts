@@ -1,13 +1,6 @@
-import { ArticlesRepository } from "../repositories/articles-repository";
-import { parseArticleContent } from "../domain/services/parse-article-content";
+import {
+  retrieveArticlesFactory,
+  ALL_PUBLISHED,
+} from "./factories/retrieve-articles-factory";
 
-type RetrievePuplishedArticles = {
-  articlesRepository: ArticlesRepository;
-};
-
-export const retrievePuplishedArticles = async ({
-  articlesRepository,
-}: RetrievePuplishedArticles) => {
-  const articlesFromRepo = await articlesRepository.allPuplished();
-  return articlesFromRepo.map(parseArticleContent);
-};
+export const retrievePuplishedArticles = retrieveArticlesFactory(ALL_PUBLISHED);
