@@ -1,16 +1,33 @@
 import { Article } from "../entites/articles";
+import { buildArticle } from "../entites/articles";
+import { ArticleIn } from "../../../app/articles/dto/article-in";
+import { IdGenerator } from "../../id/repositories/id-generator";
+import { Time } from "../../time/repositories/time";
 import { ArticlesRepository } from "../repositories/articles-repository";
 import { stringifyArticleContent } from "../utils/stringify-article-content";
 
 type PostArticle = {
-  article: Article;
+  articleIn: ArticleIn;
   articlesRepository: ArticlesRepository;
+  time: Time;
+  idGenerator: IdGenerator;
 };
 
 export const postArticle = async ({
-  article,
+  articleIn,
   articlesRepository,
+  time,
+  idGenerator,
 }: PostArticle) => {
-  await articlesRepository.add(stringifyArticleContent(article));
+  const article: Article = buildArticle({
+    ...articleIn,
+    date: time.now(),
+    id: idGenerator.makeId(),
+  });
+  await articlesRepository.add(
+    stringifyArticleContent({
+      ...article,
+    })
+  );
   return article;
 };

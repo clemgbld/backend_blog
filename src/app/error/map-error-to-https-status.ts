@@ -12,6 +12,10 @@ const buildErrorToStatusMapping = (id: string) => {
     "timeToRead is mandatory": 400,
     [deleteSubscriberMessage]: 400,
     [idDoesNotExist]: 400,
+    "An article must have an id": 400,
+    "An article must have a content": 400,
+    "An article must have a title": 400,
+    "An article must have a date": 400,
   };
 };
 

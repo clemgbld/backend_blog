@@ -42,26 +42,33 @@ export const updateHandler = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const postHandler = catchAsync(async (req: Request, res: Response) => {
-  const article = buildArticle({
-    id: req.idService.idGenerator.makeId(),
-    date: req.timeService.time.now(),
-    title: req.body.title,
-    summary: req.body.summary,
-    content: req.body.content,
-    topic: req.body.topic,
-    hide: req.body.hide,
-    lightMode: req.body.lightMode,
-  });
+  try {
+    const article = await postArticle({
+      articleIn: {
+        title: req.body.title,
+        summary: req.body.summary,
+        content: req.body.content,
+        topic: req.body.topic,
+        hide: req.body.hide,
+        lightMode: req.body.lightMode,
+      },
+      articlesRepository: req.articlesService.articlesRepository,
+      time: req.timeService.time,
+      idGenerator: req.idService.idGenerator,
+    });
 
-  await postArticle({
-    article,
-    articlesRepository: req.articlesService.articlesRepository,
-  });
-
-  res.status(201).json({
-    status: "success",
-    data: article,
-  });
+    res.status(201).json({
+      status: "success",
+      data: article,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new AppError(
+        err.message,
+        mapErrorToHttpStatus(err.message, req.params.id)
+      );
+    }
+  }
 });
 
 export const deleteHandler = catchAsync(async (req: Request, res: Response) => {
