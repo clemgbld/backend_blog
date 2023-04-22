@@ -1,5 +1,8 @@
 import { UserRepository } from "../repositories/auth-repositories";
 import { TokenGenerator } from "../repositories/auth-repositories";
+import { BEARER } from "../domain/constants";
+import { AUTH_ERROR_MESSAGES } from "../domain/exceptions/constants";
+import { retrieveToken } from "../domain/services/retrieve-token";
 
 type Protect = {
   userRepository: UserRepository;
@@ -7,20 +10,18 @@ type Protect = {
   bearerToken: string | undefined;
 };
 
-const retrieveToken = (bearerToken: string) => bearerToken.split(" ")[1];
-
 export const protect = async ({
   userRepository,
   tokenGenerator,
   bearerToken,
 }: Protect) => {
-  if (!bearerToken?.startsWith("Bearer")) {
-    throw new Error("You are not logged in !");
+  if (!bearerToken?.startsWith(BEARER)) {
+    throw new Error(AUTH_ERROR_MESSAGES.NO_BEARER);
   }
   const token = retrieveToken(bearerToken);
 
   if (!token) {
-    throw new Error("You are not logged in ! Please log in to get access.");
+    throw new Error(AUTH_ERROR_MESSAGES.NO_TOKEN);
   }
 
   const { id } = await tokenGenerator.decode(token);
@@ -28,7 +29,7 @@ export const protect = async ({
   const user = await userRepository.findById(id);
 
   if (!user) {
-    throw new Error("The user belonging to this token does no longer exist.");
+    throw new Error(AUTH_ERROR_MESSAGES.USER_DOES_NOT_EXIST);
   }
 
   return undefined;

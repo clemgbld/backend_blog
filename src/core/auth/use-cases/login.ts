@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import { User } from "../domain/user";
+import { shouldLogUser } from "../domain/services/should-log-user";
 import {
   UserRepository,
   TokenGenerator,
 } from "../repositories/auth-repositories";
+import { AUTH_ERROR_MESSAGES } from "../domain/exceptions/constants";
 
 type Login = {
   email: string | undefined;
@@ -12,15 +12,6 @@ type Login = {
   tokenGenerator: TokenGenerator;
 };
 
-const shouldLogUser = async ({
-  user,
-  password,
-}: {
-  user?: User;
-  password: string;
-}): Promise<boolean> =>
-  !!user && (await bcrypt.compare(password, user.password));
-
 export const login = async ({
   email,
   password,
@@ -28,7 +19,7 @@ export const login = async ({
   tokenGenerator,
 }: Login) => {
   if (!email || !password) {
-    throw new Error("Please provide an email address and a password.");
+    throw new Error(AUTH_ERROR_MESSAGES.NO_EMAIL_OR_PASSWORD);
   }
 
   const user = await userRepository.one(email);
@@ -37,5 +28,5 @@ export const login = async ({
     return tokenGenerator.generate(user?.id);
   }
 
-  throw new Error("Please provide a valid email address and password.");
+  throw new Error(AUTH_ERROR_MESSAGES.NO_VALID_EMAIL_OR_PASSWORD);
 };
