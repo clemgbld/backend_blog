@@ -16,8 +16,15 @@ describe("update article", () => {
     const articlesRepository = buildInMemoryArticlesRepository();
     await addArticleToBlog(article, articlesRepository);
 
+    const articleIn = {
+      id: "abc",
+      title: "title 2",
+      date: 12345,
+      content: [{ tyqpe: "h1", id: "1", text: "hello" }],
+    };
+
     const articleUpdated = await updateArticle({
-      article: modifiedArticle,
+      articleIn,
       articlesRepository,
     });
 
@@ -29,17 +36,17 @@ describe("update article", () => {
   });
 
   it("should be null when it did not find the article to update", async () => {
-    const article = buildArticle({
+    const articleIn = {
       id: "abc",
       title: "title 1",
       date: 12345,
       content: [{ tyqpe: "h1", id: "1", text: "hello" }],
-    });
+    };
     const articlesRepository = buildInMemoryArticlesRepository();
 
     await expect(async () =>
       updateArticle({
-        article,
+        articleIn,
         articlesRepository,
       })
     ).rejects.toThrowError("abc id does not exist");

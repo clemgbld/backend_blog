@@ -12,20 +12,18 @@ import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
 import { AppError } from "../../error/app-error";
 
 export const updateHandler = catchAsync(async (req: Request, res: Response) => {
-  const article = buildArticle({
-    id: req.body.id,
-    topic: req.body.topic,
-    title: req.body.title,
-    summary: req.body.summary,
-    date: req.body.date,
-    content: req.body.content,
-    hide: req.body.hide,
-    lightMode: req.body.lightMode,
-  });
-
   try {
     const updtatedArticle = await updateArticle({
-      article,
+      articleIn: {
+        id: req.body.id,
+        topic: req.body.topic,
+        title: req.body.title,
+        summary: req.body.summary,
+        date: req.body.date,
+        content: req.body.content,
+        hide: req.body.hide,
+        lightMode: req.body.lightMode,
+      },
       articlesRepository: req.articlesService.articlesRepository,
     });
 
