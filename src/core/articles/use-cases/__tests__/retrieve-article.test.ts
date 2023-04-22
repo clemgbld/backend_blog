@@ -36,6 +36,8 @@ describe("retrieve article", () => {
 
     await addArticleToBlog(article, articlesRepository);
 
-    expect(await retrieveArticle({ id: "abc", articlesRepository })).toBe(null);
+    await expect(
+      async () => await retrieveArticle({ id: "abc", articlesRepository })
+    ).rejects.toThrowError("abc id does not exist");
   });
 });

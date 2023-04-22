@@ -11,6 +11,8 @@ export const retrieveArticle = async ({
   articlesRepository,
 }: RetrieveArticle) => {
   const articleFromRepo = await articlesRepository.one(id);
-  if (!articleFromRepo) return null;
+  if (!articleFromRepo) {
+    throw new Error(`${id} id does not exist`);
+  }
   return parseArticleContent(articleFromRepo);
 };

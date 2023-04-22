@@ -8,6 +8,8 @@ import { postArticle } from "../../../core/articles/use-cases/post-article";
 import { catchAsync } from "../../error/catch-async";
 import { buildArticle } from "../../../core/articles/entites/articles";
 import { throw400ErrorWhenIdDoesNotExist } from "../../error/throw-error";
+import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
+import { AppError } from "../../error/app-error";
 
 export const updateHandler = catchAsync(async (req: Request, res: Response) => {
   const article = buildArticle({
@@ -100,16 +102,23 @@ export const retrievePublishedArticlesHandler = catchAsync(
 
 export const retrievePublishedArticleHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const article = await retrieveArticle({
-      id: req.params.id,
-      articlesRepository: req.articlesService.articlesRepository,
-    });
+    try {
+      const article = await retrieveArticle({
+        id: req.params.id,
+        articlesRepository: req.articlesService.articlesRepository,
+      });
 
-    if (!article) return throw400ErrorWhenIdDoesNotExist(req.params.id);
-
-    res.status(200).json({
-      status: "success",
-      data: article,
-    });
+      res.status(200).json({
+        status: "success",
+        data: article,
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new AppError(
+          err.message,
+          mapErrorToHttpStatus(err.message, req.params.id)
+        );
+      }
+    }
   }
 );
