@@ -96,7 +96,7 @@ describe("articles repository", () => {
     const { article: article2 } = generateArticle();
     const hiddenArticle2 = { ...article2, hide: true };
     await articlesRepository.add(hiddenArticle2);
-    expect(await articlesRepository.allPuplished()).toEqual([article]);
+    expect(await articlesRepository.allPublished()).toEqual([article]);
   });
 
   it("should not retrieve non published article", async () => {

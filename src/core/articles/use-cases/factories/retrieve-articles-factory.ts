@@ -3,11 +3,11 @@ import { parseArticleContent } from "../../domain/services/parse-article-content
 
 export const ALL = "all";
 
-export const ALL_PUBLISHED = "allPuplished";
+export const ALL_PUBLISHED = "allPublished";
 
 type All = "all";
 
-type AllPublished = "allPuplished";
+type AllPublished = "allPublished";
 
 type ArticleRepositoryRetrieveMethod = All | AllPublished;
 

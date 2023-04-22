@@ -15,7 +15,7 @@ export const buildArticlesRepository = (db: Db): ArticlesRepository => {
       const articlesFromDb = await collection.find().toArray();
       return adaptDataListForApp(articlesFromDb);
     },
-    allPuplished: async (): Promise<ArticleWithStringifyContent[]> => {
+    allPublished: async (): Promise<ArticleWithStringifyContent[]> => {
       const articlesFromDb = await collection.find({ hide: false }).toArray();
       return adaptDataListForApp(articlesFromDb);
     },

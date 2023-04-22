@@ -16,5 +16,5 @@ export type ArticlesRepository = {
     article: ArticleWithStringifyContent
   ) => Promise<ArticleWithStringifyContent | undefined>;
   one: (id: string) => Promise<ArticleWithStringifyContent | undefined>;
-  allPuplished: () => Promise<ArticleWithStringifyContent[]>;
+  allPublished: () => Promise<ArticleWithStringifyContent[]>;
 };
