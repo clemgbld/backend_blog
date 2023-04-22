@@ -1,7 +1,7 @@
 import { buildArticle } from "../domain/articles";
 import { ArticlesRepository } from "../repositories/articles-repository";
-import { stringifyArticleContent } from "../utils/stringify-article-content";
-import { parseArticleContent } from "../utils/parse-article-content";
+import { stringifyArticleContent } from "../domain/services/stringify-article-content";
+import { parseArticleContent } from "../domain/services/parse-article-content";
 import { ArticleIn } from "../../../app/articles/dto/article-in";
 
 type UpdateArticle = {

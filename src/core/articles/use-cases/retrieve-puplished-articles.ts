@@ -1,5 +1,5 @@
 import { ArticlesRepository } from "../repositories/articles-repository";
-import { parseArticleContent } from "../utils/parse-article-content";
+import { parseArticleContent } from "../domain/services/parse-article-content";
 
 type RetrievePuplishedArticles = {
   articlesRepository: ArticlesRepository;

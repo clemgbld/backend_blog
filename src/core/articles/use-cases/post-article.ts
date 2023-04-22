@@ -4,7 +4,7 @@ import { ArticleIn } from "../../../app/articles/dto/article-in";
 import { IdGenerator } from "../../id/repositories/id-generator";
 import { Time } from "../../time/repositories/time";
 import { ArticlesRepository } from "../repositories/articles-repository";
-import { stringifyArticleContent } from "../utils/stringify-article-content";
+import { stringifyArticleContent } from "../domain/services/stringify-article-content";
 
 type PostArticle = {
   articleIn: ArticleIn;

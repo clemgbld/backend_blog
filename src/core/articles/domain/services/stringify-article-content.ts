@@ -1,4 +1,4 @@
-import { Article } from "../domain/articles";
+import { Article } from "../articles";
 
 export const stringifyArticleContent = (article: Article) => ({
   ...article,
