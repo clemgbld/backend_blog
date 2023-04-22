@@ -30,30 +30,20 @@ export const loginHandler = catchAsync(async (req: Request, res: Response) => {
 
 export const protectHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.headers.authorization?.startsWith("Bearer")) {
-      throw new AppError("You are not logged in !", 401);
+    try {
+      await protect({
+        bearerToken: req.headers.authorization,
+        userRepository: req.authService.userRepository,
+        tokenGenerator: req.authService.tokenGenerator,
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new AppError(
+          err.message,
+          mapErrorToHttpStatus(err.message, req.body.id)
+        );
+      }
     }
-
-    const { user, hasToken } = await protect({
-      bearerToken: req.headers.authorization,
-      userRepository: req.authService.userRepository,
-      tokenGenerator: req.authService.tokenGenerator,
-    });
-
-    if (!hasToken) {
-      throw new AppError(
-        "You are not logged in ! Please log in to get access.",
-        401
-      );
-    }
-
-    if (!user) {
-      throw new AppError(
-        "The user belonging to this token does no longer exist.",
-        401
-      );
-    }
-
     next();
   }
 );

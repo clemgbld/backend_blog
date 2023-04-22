@@ -28,32 +28,49 @@ describe("protect", () => {
         bearerToken,
       });
 
-      expect(isLoggedIn).toEqual({ user, hasToken: true });
+      expect(isLoggedIn).toEqual(undefined);
     });
 
     describe("given that the user is not logged in", () => {
-      it("should not enable the user to an operation when there is no token", async () => {
+      it("should not enable the user to do an operation when the token does not start with bearer", async () => {
+        await expect(async () =>
+          protect({
+            userRepository,
+            tokenGenerator,
+            bearerToken: "token",
+          })
+        ).rejects.toThrowError("You are not logged in !");
+      });
+
+      it("should not enable the user to do an operation when there is no token", async () => {
         const bearerToken = "Bearer";
 
-        const isLoggedIn = await protect({
-          userRepository,
-          tokenGenerator,
-          bearerToken,
-        });
-
-        expect(isLoggedIn).toEqual({ user: null, hasToken: false });
+        await expect(
+          async () =>
+            await protect({
+              userRepository,
+              tokenGenerator,
+              bearerToken,
+            })
+        ).rejects.toThrowError(
+          "You are not logged in ! Please log in to get access."
+        );
       });
 
       it("should not enable the user to do an operation when there is a non valid token", async () => {
         const user = await buildUser({ id: "abc", email, password });
         await userRepository.add(user);
         const bearerToken = "Bearer FAKE_TOKEN_NOT_VALID";
-        const isLoggedIn = await protect({
-          userRepository,
-          tokenGenerator,
-          bearerToken,
-        });
-        expect(isLoggedIn).toEqual({ user: null, hasToken: true });
+        await expect(
+          async () =>
+            await protect({
+              userRepository,
+              tokenGenerator,
+              bearerToken,
+            })
+        ).rejects.toThrowError(
+          "The user belonging to this token does no longer exist."
+        );
       });
     });
   });
