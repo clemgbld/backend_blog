@@ -1,5 +1,5 @@
-import { UserRepository } from "../repositories/auth-repositories";
-import { TokenGenerator } from "../repositories/auth-repositories";
+import { UserRepository } from "../domain/repositories/auth-repositories";
+import { TokenGenerator } from "../domain/repositories/auth-repositories";
 import { BEARER } from "../domain/constants";
 import { AUTH_ERROR_MESSAGES } from "../domain/exceptions/constants";
 import { retrieveToken } from "../domain/services/retrieve-token";

@@ -1,8 +1,8 @@
 import {
   UserRepository,
   TokenGenerator,
-} from "../../src/core/auth/repositories/auth-repositories";
-import { ArticlesRepository } from "../../src/core/articles/repositories/articles-repository";
+} from "../../src/core/auth/domain/repositories/auth-repositories";
+import { ArticlesRepository } from "../../src/core/articles/domain/repositories/articles-repository";
 import { Time } from "../../src/core/time/repositories/time";
 import { IdGenerator } from "../../src/core/id/repositories/id-generator";
 import { FilesRepository } from "../../src/core/subscription/domain/repositories/files-repository";

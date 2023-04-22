@@ -3,7 +3,7 @@ import { buildArticle } from "../domain/articles";
 import { ArticleIn } from "../../../app/articles/dto/article-in";
 import { IdGenerator } from "../../id/repositories/id-generator";
 import { Time } from "../../time/repositories/time";
-import { ArticlesRepository } from "../repositories/articles-repository";
+import { ArticlesRepository } from "../domain/repositories/articles-repository";
 import { stringifyArticleContent } from "../domain/services/stringify-article-content";
 
 type PostArticle = {

@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import {
   UserRepository,
   TokenGenerator,
-} from "../../../core/auth/repositories/auth-repositories";
+} from "../../../core/auth/domain/repositories/auth-repositories";
 
 export const buildAuthMiddlewareServices =
   (services: {

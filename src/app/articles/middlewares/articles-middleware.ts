@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { ArticlesRepository } from "../../../core/articles/repositories/articles-repository";
+import { ArticlesRepository } from "../../../core/articles/domain/repositories/articles-repository";
 
 export const buildArticlesMiddleware =
   (services: { articlesRepository: ArticlesRepository }) =>

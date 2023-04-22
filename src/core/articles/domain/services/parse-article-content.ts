@@ -1,4 +1,4 @@
-import { ArticleWithStringifyContent } from "../../repositories/articles-repository";
+import { ArticleWithStringifyContent } from "../repositories/articles-repository";
 
 export const parseArticleContent = (article: ArticleWithStringifyContent) => ({
   ...article,

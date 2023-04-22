@@ -1,6 +1,6 @@
 import { Db } from "mongodb";
-import { ArticlesRepository } from "../../core/articles/repositories/articles-repository";
-import { ArticleWithStringifyContent } from "../../core/articles/repositories/articles-repository";
+import { ArticlesRepository } from "../../core/articles/domain/repositories/articles-repository";
+import { ArticleWithStringifyContent } from "../../core/articles/domain/repositories/articles-repository";
 import {
   adaptDataForApp,
   adaptDataForMongoDb,

@@ -1,5 +1,5 @@
-import { ArticleWithStringifyContent } from "../../core/articles/repositories/articles-repository";
-import { ArticlesRepository } from "../../core/articles/repositories/articles-repository";
+import { ArticleWithStringifyContent } from "../../core/articles/domain/repositories/articles-repository";
+import { ArticlesRepository } from "../../core/articles/domain/repositories/articles-repository";
 
 export const buildInMemoryArticlesRepository = (): ArticlesRepository => {
   const db: Set<{ key: string; value: ArticleWithStringifyContent }> =

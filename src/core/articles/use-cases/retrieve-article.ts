@@ -1,4 +1,4 @@
-import { ArticlesRepository } from "../repositories/articles-repository";
+import { ArticlesRepository } from "../domain/repositories/articles-repository";
 import { parseArticleContent } from "../domain/services/parse-article-content";
 
 type RetrieveArticle = {

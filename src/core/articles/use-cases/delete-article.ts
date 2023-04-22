@@ -1,4 +1,4 @@
-import { ArticlesRepository } from "../repositories/articles-repository";
+import { ArticlesRepository } from "../domain/repositories/articles-repository";
 
 type DeleteArticle = {
   id: string;

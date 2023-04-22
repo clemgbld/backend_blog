@@ -2,7 +2,7 @@ import { shouldLogUser } from "../domain/services/should-log-user";
 import {
   UserRepository,
   TokenGenerator,
-} from "../repositories/auth-repositories";
+} from "../domain/repositories/auth-repositories";
 import { AUTH_ERROR_MESSAGES } from "../domain/exceptions/constants";
 
 type Login = {
