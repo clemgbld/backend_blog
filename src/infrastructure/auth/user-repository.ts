@@ -1,5 +1,5 @@
 import { Db } from "mongodb";
-import { User } from "../../core/auth/entities/user";
+import { User } from "../../core/auth/domain/user";
 import {
   adaptDataForApp,
   adaptDataForMongoDb,

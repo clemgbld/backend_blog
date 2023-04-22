@@ -1,4 +1,5 @@
 import { Db } from "mongodb";
+import { ArticlesRepository } from "../../core/articles/repositories/articles-repository";
 import { ArticleWithStringifyContent } from "../../core/articles/repositories/articles-repository";
 import {
   adaptDataForApp,
@@ -7,7 +8,7 @@ import {
   adaptIdForMongoDB,
 } from "../db/utils/adapt-data";
 
-export const buildArticlesRepository = (db: Db) => {
+export const buildArticlesRepository = (db: Db): ArticlesRepository => {
   const collection = db.collection("articles");
   return {
     all: async (): Promise<ArticleWithStringifyContent[]> => {
@@ -25,7 +26,7 @@ export const buildArticlesRepository = (db: Db) => {
       adaptDataForApp(
         await collection.findOne({ _id: adaptIdForMongoDB(id), hide: false })
       ),
-    delete: async (id: string): Promise<boolean | undefined> => {
+    delete: async (id: string): Promise<boolean> => {
       const deletedArticle = await collection.deleteOne({
         _id: adaptIdForMongoDB(id),
       });

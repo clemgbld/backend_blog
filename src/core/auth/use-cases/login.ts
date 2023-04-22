@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { User } from "../entities/user";
+import { User } from "../domain/user";
 import {
   UserRepository,
   TokenGenerator,

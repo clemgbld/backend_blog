@@ -13,7 +13,7 @@ import { subscriptionRouter } from "../routes/subscription-router";
 import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-memory-user-repository";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
-import { buildUser } from "../../../core/auth/entities/user";
+import { buildUser } from "../../../core/auth/domain/user";
 
 let app: Express;
 let subscriptionRepository: SubscriptionRepository;

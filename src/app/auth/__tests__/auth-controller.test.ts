@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import request from "supertest";
 import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-memory-user-repository";
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
-import { buildUser } from "../../../core/auth/entities/user";
+import { buildUser } from "../../../core/auth/domain/user";
 import { authRouter } from "../routes/auth-router";
 import { buildAuthMiddlewareServices } from "../middlewares/auth-middleware-services";
 import bodyParser from "body-parser";

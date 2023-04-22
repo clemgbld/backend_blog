@@ -1,4 +1,4 @@
-import { User } from "../../core/auth/entities/user";
+import { User } from "../../core/auth/domain/user";
 
 export const buildInMemoryUserRepository = () => {
   const db: Set<User> = new Set();

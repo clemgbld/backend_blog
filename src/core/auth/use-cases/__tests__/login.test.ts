@@ -1,6 +1,6 @@
 import { buildInMemoryUserRepository } from "../../../../infrastructure/auth/in-memory-user-repository";
 import { inMemoryTokenGenerator } from "../../../../infrastructure/auth/in-memory-token-generator";
-import { buildUser } from "../../entities/user";
+import { buildUser } from "../../domain/user";
 import { login } from "../login";
 
 let userRepository: ReturnType<typeof buildInMemoryUserRepository>;

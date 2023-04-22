@@ -2,7 +2,7 @@ import { MongoClient, Db } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { initDB } from "../../db/db";
 import { buildUserRepository } from "../user-repository";
-import { buildUser } from "../../../core/auth/entities/user";
+import { buildUser } from "../../../core/auth/domain/user";
 import { buildIdGenerator } from "../../id/id-generator";
 
 let db: Db;

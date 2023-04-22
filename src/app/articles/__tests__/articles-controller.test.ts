@@ -7,7 +7,7 @@ import { buildInMemoryUserRepository } from "../../../infrastructure/auth/in-mem
 import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-token-generator";
 import { articlesRouter } from "../routes/articles-router";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
-import { buildUser } from "../../../core/auth/entities/user";
+import { buildUser } from "../../../core/auth/domain/user";
 import { buildArticle } from "../../../core/articles/domain/articles";
 import { buildInMemoryTime } from "../../../infrastructure/time/in-memory-time";
 import { buildInMemoryIdGenerator } from "../../../infrastructure/id/in-memory-id-generator";
