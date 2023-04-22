@@ -6,8 +6,6 @@ import { retrieveArticle } from "../../../core/articles/use-cases/retrieve-artic
 import { updateArticle } from "../../../core/articles/use-cases/update-article";
 import { postArticle } from "../../../core/articles/use-cases/post-article";
 import { catchAsync } from "../../error/catch-async";
-import { buildArticle } from "../../../core/articles/entites/articles";
-import { throw400ErrorWhenIdDoesNotExist } from "../../error/throw-error";
 import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
 import { AppError } from "../../error/app-error";
 
@@ -72,17 +70,23 @@ export const postHandler = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const deleteHandler = catchAsync(async (req: Request, res: Response) => {
-  const deletedArticle = await deleteArticle({
-    id: req.params.id,
-    articlesRepository: req.articlesService.articlesRepository,
-  });
-
-  if (!deletedArticle) return throw400ErrorWhenIdDoesNotExist(req.params.id);
-
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+  try {
+    await deleteArticle({
+      id: req.params.id,
+      articlesRepository: req.articlesService.articlesRepository,
+    });
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new AppError(
+        err.message,
+        mapErrorToHttpStatus(err.message, req.params.id)
+      );
+    }
+  }
 });
 
 export const retrieveArticlesHandler = catchAsync(

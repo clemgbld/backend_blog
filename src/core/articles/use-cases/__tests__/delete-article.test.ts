@@ -25,7 +25,7 @@ describe("delete article", () => {
 
     await addArticleToBlog(article2, articlesRepository);
 
-    const deletedArticle = await deleteArticle({
+    await deleteArticle({
       id: "abc",
       articlesRepository,
     });
@@ -33,17 +33,16 @@ describe("delete article", () => {
     expect(await articlesRepository.all()).toEqual([
       { ...article1, content: JSON.stringify(article1.content) },
     ]);
-
-    expect(deletedArticle).toEqual({ acknowledged: true, deletedCount: 1 });
   });
 
   it("should be null when no article has been deleted", async () => {
     const articlesRepository = buildInMemoryArticlesRepository();
-    const deletedArticle = await deleteArticle({
-      id: "abc",
-      articlesRepository,
-    });
-
-    expect(deletedArticle).toBe(null);
+    await expect(
+      async () =>
+        await deleteArticle({
+          id: "abc",
+          articlesRepository,
+        })
+    ).rejects.toThrowError("abc id does not exist");
   });
 });

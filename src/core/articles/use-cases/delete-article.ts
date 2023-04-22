@@ -9,7 +9,9 @@ export const deleteArticle = async ({
   id,
   articlesRepository,
 }: DeleteArticle) => {
-  const deletedArticle = await articlesRepository.delete(id);
+  const isSuccess = await articlesRepository.delete(id);
 
-  return deletedArticle ? deletedArticle : null;
+  if (!isSuccess) {
+    throw new Error(`${id} id does not exist`);
+  }
 };

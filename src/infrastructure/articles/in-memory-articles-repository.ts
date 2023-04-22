@@ -1,6 +1,7 @@
 import { ArticleWithStringifyContent } from "../../core/articles/repositories/articles-repository";
+import { ArticlesRepository } from "../../core/articles/repositories/articles-repository";
 
-export const buildInMemoryArticlesRepository = () => {
+export const buildInMemoryArticlesRepository = (): ArticlesRepository => {
   const db: Set<{ key: string; value: ArticleWithStringifyContent }> =
     new Set();
 
@@ -15,7 +16,7 @@ export const buildInMemoryArticlesRepository = () => {
     const deletedArticle = await one(id);
     const articleToDelete: any = [...db].find(({ key }) => key === id);
     db.delete(articleToDelete);
-    return deletedArticle ? { acknowledged: true, deletedCount: 1 } : undefined;
+    return !!deletedArticle;
   };
 
   const all = () => [...db].map((db) => db.value);

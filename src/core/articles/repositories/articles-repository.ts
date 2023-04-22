@@ -15,7 +15,7 @@ export type DeletedData = {
 
 export type ArticlesRepository = {
   add: (article: ArticleWithStringifyContent) => Promise<void>;
-  delete: (id: string) => Promise<DeletedData | undefined>;
+  delete: (id: string) => Promise<boolean>;
   all: () => Promise<ArticleWithStringifyContent[]>;
   update: (
     article: ArticleWithStringifyContent
