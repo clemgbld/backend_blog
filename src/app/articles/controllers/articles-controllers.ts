@@ -23,17 +23,24 @@ export const updateHandler = catchAsync(async (req: Request, res: Response) => {
     lightMode: req.body.lightMode,
   });
 
-  const updtatedArticle = await updateArticle({
-    article,
-    articlesRepository: req.articlesService.articlesRepository,
-  });
+  try {
+    const updtatedArticle = await updateArticle({
+      article,
+      articlesRepository: req.articlesService.articlesRepository,
+    });
 
-  if (!updtatedArticle) return throw400ErrorWhenIdDoesNotExist(article.id);
-
-  res.status(200).json({
-    status: "success",
-    data: updtatedArticle,
-  });
+    res.status(200).json({
+      status: "success",
+      data: updtatedArticle,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new AppError(
+        err.message,
+        mapErrorToHttpStatus(err.message, req.body.id)
+      );
+    }
+  }
 });
 
 export const postHandler = catchAsync(async (req: Request, res: Response) => {

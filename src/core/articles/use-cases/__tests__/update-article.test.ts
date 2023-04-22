@@ -37,11 +37,11 @@ describe("update article", () => {
     });
     const articlesRepository = buildInMemoryArticlesRepository();
 
-    const articleUpdated = await updateArticle({
-      article,
-      articlesRepository,
-    });
-
-    expect(articleUpdated).toBe(null);
+    await expect(async () =>
+      updateArticle({
+        article,
+        articlesRepository,
+      })
+    ).rejects.toThrowError("abc id does not exist");
   });
 });

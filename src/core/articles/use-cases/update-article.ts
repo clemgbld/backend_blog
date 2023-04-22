@@ -15,5 +15,10 @@ export const updateArticle = async ({
   const modifiedArticle = await articlesRepository.update(
     stringifyArticleContent(article)
   );
-  return modifiedArticle ? parseArticleContent(modifiedArticle) : null;
+
+  if (!modifiedArticle) {
+    throw new Error(`${article.id} id does not exist`);
+  }
+
+  return parseArticleContent(modifiedArticle);
 };
