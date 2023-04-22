@@ -1,4 +1,4 @@
-import { Article } from "../entites/articles";
+import { Article } from "../domain/articles";
 
 export const stringifyArticleContent = (article: Article) => ({
   ...article,

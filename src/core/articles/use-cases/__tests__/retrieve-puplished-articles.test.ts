@@ -1,5 +1,5 @@
 import { buildInMemoryArticlesRepository } from "../../../../infrastructure/articles/in-memory-articles-repository";
-import { buildArticle } from "../../entites/articles";
+import { buildArticle } from "../../domain/articles";
 import { addArticleToBlog } from "../test-helper/test-helper";
 import { retrievePuplishedArticles } from "../retrieve-puplished-articles";
 

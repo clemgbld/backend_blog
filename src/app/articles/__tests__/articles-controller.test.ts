@@ -8,7 +8,7 @@ import { inMemoryTokenGenerator } from "../../../infrastructure/auth/in-memory-t
 import { articlesRouter } from "../routes/articles-router";
 import { buildAuthMiddlewareServices } from "../../auth/middlewares/auth-middleware-services";
 import { buildUser } from "../../../core/auth/entities/user";
-import { buildArticle } from "../../../core/articles/entites/articles";
+import { buildArticle } from "../../../core/articles/domain/articles";
 import { buildInMemoryTime } from "../../../infrastructure/time/in-memory-time";
 import { buildInMemoryIdGenerator } from "../../../infrastructure/id/in-memory-id-generator";
 import { buildTimeMiddleware } from "../../time/middlewares/time-middleware";

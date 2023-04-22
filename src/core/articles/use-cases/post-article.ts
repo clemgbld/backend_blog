@@ -1,5 +1,5 @@
-import { Article } from "../entites/articles";
-import { buildArticle } from "../entites/articles";
+import { Article } from "../domain/articles";
+import { buildArticle } from "../domain/articles";
 import { ArticleIn } from "../../../app/articles/dto/article-in";
 import { IdGenerator } from "../../id/repositories/id-generator";
 import { Time } from "../../time/repositories/time";

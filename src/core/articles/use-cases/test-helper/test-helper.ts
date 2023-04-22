@@ -1,4 +1,4 @@
-import { buildArticle } from "../../entites/articles";
+import { buildArticle } from "../../domain/articles";
 import { buildInMemoryArticlesRepository } from "../../../../infrastructure/articles/in-memory-articles-repository";
 
 export const addArticleToBlog = async (

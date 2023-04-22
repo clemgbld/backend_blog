@@ -1,5 +1,5 @@
-import { articleValidation } from "./validation/article-validation";
-import { calcReadingTime } from "./reading-time/calculate-reading-time";
+import { articleValidation } from "./services/validation/article-validation";
+import { calcReadingTime } from "./services/reading-time/calculate-reading-time";
 
 type ArticleProps = {
   id?: string;

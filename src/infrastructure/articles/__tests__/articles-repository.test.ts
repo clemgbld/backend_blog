@@ -2,7 +2,7 @@ import { MongoClient, Db } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { initDB } from "../../db/db";
 import { buildArticlesRepository } from "../articles-repository";
-import { buildArticle } from "../../../core/articles/entites/articles";
+import { buildArticle } from "../../../core/articles/domain/articles";
 import { buildIdGenerator } from "../../id/id-generator";
 import { buildTime } from "../../time/time";
 
@@ -61,19 +61,17 @@ describe("articles repository", () => {
   it("should be able to delete the expected article", async () => {
     const { article, id } = generateArticle();
     await articlesRepository.add(article);
-    const deletedArticle = await articlesRepository.delete(id);
+    const isSuccess = await articlesRepository.delete(id);
     expect(await articlesRepository.one(id)).toEqual(undefined);
-    expect(deletedArticle).toEqual({
-      acknowledged: true,
-      deletedCount: 1,
-    });
+
+    expect(isSuccess).toEqual(true);
   });
 
   it("should be undefined when it deleted nothing", async () => {
     const idGenerator = buildIdGenerator();
     const id = idGenerator.makeId();
-    const deletedArticle = await articlesRepository.delete(id);
-    expect(deletedArticle).toBe(undefined);
+    const isSuccess = await articlesRepository.delete(id);
+    expect(isSuccess).toBe(false);
   });
 
   it("should be update an article", async () => {
