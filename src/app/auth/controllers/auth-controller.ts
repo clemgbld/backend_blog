@@ -3,30 +3,29 @@ import { login } from "../../../core/auth/use-cases/login";
 import { protect } from "../../../core/auth/use-cases/protect";
 import { catchAsync } from "../../error/catch-async";
 import { AppError } from "../../error/app-error";
+import { mapErrorToHttpStatus } from "../../error/map-error-to-https-status";
 
 export const loginHandler = catchAsync(async (req: Request, res: Response) => {
-  if (!req.body.email || !req.body.password) {
-    throw new AppError("Please provide an email address and a password.", 400);
+  try {
+    const tokenObj = await login({
+      email: req.body.email,
+      password: req.body.password,
+      userRepository: req.authService.userRepository,
+      tokenGenerator: req.authService.tokenGenerator,
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: tokenObj,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new AppError(
+        err.message,
+        mapErrorToHttpStatus(err.message, req.body.id)
+      );
+    }
   }
-
-  const tokenObj = await login({
-    email: req.body.email,
-    password: req.body.password,
-    userRepository: req.authService.userRepository,
-    tokenGenerator: req.authService.tokenGenerator,
-  });
-
-  if (!tokenObj) {
-    throw new AppError(
-      "Please provide a valid email address and password.",
-      401
-    );
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: tokenObj,
-  });
 });
 
 export const protectHandler = catchAsync(

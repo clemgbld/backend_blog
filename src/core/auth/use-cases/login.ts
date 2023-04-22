@@ -6,8 +6,8 @@ import {
 } from "../repositories/auth-repositories";
 
 type Login = {
-  email: string;
-  password: string;
+  email: string | undefined;
+  password: string | undefined;
   userRepository: UserRepository;
   tokenGenerator: TokenGenerator;
 };
@@ -27,9 +27,15 @@ export const login = async ({
   userRepository,
   tokenGenerator,
 }: Login) => {
+  if (!email || !password) {
+    throw new Error("Please provide an email address and a password.");
+  }
+
   const user = await userRepository.one(email);
 
-  return (await shouldLogUser({ user, password }))
-    ? tokenGenerator.generate(user?.id)
-    : null;
+  if (await shouldLogUser({ user, password })) {
+    return tokenGenerator.generate(user?.id);
+  }
+
+  throw new Error("Please provide a valid email address and password.");
 };

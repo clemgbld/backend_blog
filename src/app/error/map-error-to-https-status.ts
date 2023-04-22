@@ -16,6 +16,11 @@ const buildErrorToStatusMapping = (id: string) => {
     "An article must have a content": 400,
     "An article must have a title": 400,
     "An article must have a date": 400,
+    "Please provide an email address and a password.": 400,
+    "The user belonging to this token does no longer exist.": 401,
+    "You are not logged in ! Please log in to get access.": 401,
+    "You are not logged in !": 401,
+    "Please provide a valid email address and password.": 401,
   };
 };
 
