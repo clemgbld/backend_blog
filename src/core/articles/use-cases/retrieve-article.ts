@@ -1,5 +1,6 @@
+import { andThen, pipe } from "ramda";
 import { ArticlesRepository } from "../domain/repositories/articles-repository";
-import { parseArticleContent } from "../domain/services/parse-article-content";
+import { buildThrowOrParseContent } from "../domain/services/parse-article-content";
 
 type RetrieveArticle = {
   id: string;
@@ -9,10 +10,8 @@ type RetrieveArticle = {
 export const retrieveArticle = async ({
   id,
   articlesRepository,
-}: RetrieveArticle) => {
-  const articleFromRepo = await articlesRepository.one(id);
-  if (!articleFromRepo) {
-    throw new Error(`${id} id does not exist`);
-  }
-  return parseArticleContent(articleFromRepo);
-};
+}: RetrieveArticle) =>
+  pipe(
+    articlesRepository.one,
+    andThen(buildThrowOrParseContent(`${id} id does not exist`))
+  )(id);
