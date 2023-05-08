@@ -5,6 +5,7 @@ import { IdGenerator } from "../../id/repositories/id-generator";
 import { Time } from "../../time/repositories/time";
 import { ArticlesRepository } from "../domain/repositories/articles-repository";
 import { stringifyArticleContent } from "../domain/services/stringify-article-content";
+import { pipe } from "ramda";
 
 type PostArticle = {
   articleIn: ArticleIn;
@@ -24,10 +25,10 @@ export const postArticle = async ({
     date: time.now(),
     id: idGenerator.makeId(),
   });
-  await articlesRepository.add(
-    stringifyArticleContent({
-      ...article,
-    })
-  );
+
+  const addArticle = pipe(stringifyArticleContent, articlesRepository.add);
+
+  await addArticle(article);
+
   return article;
 };
