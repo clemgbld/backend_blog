@@ -1,4 +1,6 @@
+import { pipe, andThen } from "ramda";
 import { ArticlesRepository } from "../domain/repositories/articles-repository";
+import { buildThrowWhenFalse } from "../domain/services/throwWhenFalse";
 
 type DeleteArticle = {
   id: string;
@@ -8,10 +10,8 @@ type DeleteArticle = {
 export const deleteArticle = async ({
   id,
   articlesRepository,
-}: DeleteArticle) => {
-  const isSuccess = await articlesRepository.delete(id);
-
-  if (!isSuccess) {
-    throw new Error(`${id} id does not exist`);
-  }
-};
+}: DeleteArticle) =>
+  pipe(
+    articlesRepository.delete,
+    andThen(buildThrowWhenFalse(`${id} id does not exist`))
+  )(id);
