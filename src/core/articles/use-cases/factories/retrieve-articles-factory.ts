@@ -1,5 +1,6 @@
 import { ArticlesRepository } from "../../domain/repositories/articles-repository";
 import { parseArticleContent } from "../../domain/services/parse-article-content";
+import { pipe, map } from "ramda";
 
 export const ALL = "all";
 
@@ -13,13 +14,7 @@ type ArticleRepositoryRetrieveMethod = All | AllPublished;
 
 export const retrieveArticlesFactory =
   (articleRepositoryRetrieveMethod: ArticleRepositoryRetrieveMethod) =>
-  async ({
-    articlesRepository,
-  }: {
-    articlesRepository: ArticlesRepository;
-  }) => {
-    const articlesFromRepo = await articlesRepository[
-      articleRepositoryRetrieveMethod
-    ]();
-    return articlesFromRepo.map(parseArticleContent);
-  };
+  async ({ articlesRepository }: { articlesRepository: ArticlesRepository }) =>
+    pipe(map(parseArticleContent))(
+      await articlesRepository[articleRepositoryRetrieveMethod]()
+    );
